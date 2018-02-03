@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { DragDropApi } from '../dragdrop.svc';
+import { DragDropApi } from '../dragdrop.api';
 
 @Component({
 selector: 'app-fields-card',

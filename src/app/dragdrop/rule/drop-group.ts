@@ -13,16 +13,19 @@ export class DropGroup {
   ){}
 
   onDragEnter(e){
-    console.log("dragEnter...drop-group", e);
+    //console.log("dragEnter...drop-group", e);
     //change background color
     //debugger
-    e.target.style.backgroundColor = 'rgba(75, 75, 75, 0.2)';
+    //e.target.style.backgroundColor = 'rgba(75, 75, 75, 0.2)';
+    e.target.classList.add("active");
   }
 
   onDragLeave(e){
-    console.log("dragLeave...drop-group", e);
+    //console.log("dragLeave...drop-group", e);
     //remove background color
-    e.target.style.backgroundColor = '';
+    //e.target.style.backgroundColor = '';
+    //debugger
+    e.target.classList.remove("active");
   }
 
 
@@ -37,11 +40,11 @@ export class DropGroup {
     e.preventDefault();
     //get data
     let data = JSON.parse(e.dataTransfer.getData("json"));
-    console.log("onDrop...drop-group", data);
+    //console.log("onDrop...drop-group", data);
     //create new group
     this.store.addGroup(data);
-    //remove background color from drop
-    e.target.style.backgroundColor = '';
+    //remove active class
+    e.target.classList.remove("active");
   }
 
 }

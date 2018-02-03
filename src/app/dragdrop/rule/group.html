@@ -1,6 +1,8 @@
 
 
-<section class="rule-item-group">
+<section class="rule-item-group"
+  (dragenter)="onDragEnter($event)"
+  (dragleave)="onDragLeave($event)">
 
   <div class="group-title">
     {{name}}
@@ -40,6 +42,5 @@
     </rule-drop-item>
 
   </div>
-
 
 </section>

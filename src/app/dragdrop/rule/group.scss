@@ -40,15 +40,15 @@
 }
 
 .group-body{
-  padding: 14px 7px 14px 35px;
-  transform: scale(0);
+  padding: 14px 7px 7px 35px;
+  //transform: scale(0);
   display: none;
 }
 
 
 .group-body.open{
   display: block;
-  transform: scale(1);
+  //transform: scale(1);
 }
 
 

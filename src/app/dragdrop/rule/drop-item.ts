@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 
 import { DragDropStore } from '../dragdrop.store';
+import { DragDropEventsRule } from '../dragdrop.events';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'rule-drop-item',
@@ -12,29 +14,50 @@ export class DropItem {
   @Input() groupId:string;
   @Input() groupName:string;
 
+  dragStart$:Subscription;
+  canDrop:boolean=true;
+
   constructor(
-    private store:DragDropStore
+    private store:DragDropStore,
+    private drag:DragDropEventsRule
   ){}
 
+  ngOnInit(){
+    this.dragStart$ = this.drag.dragStart$
+    .subscribe((d:any)=>{
+      if (this.groupName == d.groupName){
+        console.log("canDrop...true");
+        this.canDrop = true;
+      }else{
+        console.log("canDrop...false");
+        this.canDrop = false;
+      }
+    })
+  }
+
   onDragEnter(e){
-    console.log("dragEnter...drop-item", e);
-    //change background color
-    //e.preventDefault();
-    //debugger
-    e.target.style.backgroundColor = 'rgba(175, 175, 175, 0.2)';
+    //console.log("dragEnter...drop-item", e);
+    //add class
+    if (this.canDrop){
+      e.target.classList.add("active");
+    }else{
+      e.target.classList.add("no-drop");
+    }
     //check if item from same group
   }
 
   onDragLeave(e){
-    console.log("dragLeave...drop-item", e);
-    //remove background color
-    e.target.style.backgroundColor = '';
+    //console.log("dragLeave...drop-item", e);
+    //remove class
+    e.target.classList.remove("active");
+    e.target.classList.remove("no-drop");
   }
-
 
   onDragOver(e){
     //we need to prevent default in order to allow drop
-    e.preventDefault();
+    if (this.canDrop){
+      e.preventDefault();
+    }
     //console.log("dragOver...drop-item");
   }
 
@@ -43,20 +66,11 @@ export class DropItem {
     e.preventDefault();
     //get data
     let data = JSON.parse(e.dataTransfer.getData("json"));
-    console.log("onDrop...drop-item", data);
+    //console.log("onDrop...drop-item", data);
     //create new group
     this.store.addItemToGroup(this.group, data);
-    //remove background color from drop
-    e.target.style.backgroundColor = '';
+    //remove active class
+    e.target.classList.remove("active");
+    e.target.classList.remove("no-drop");
   }
-
-  canBeDropped(d){
-    debugger
-    if (this.groupId == d.groupId){
-      return true;
-    }else{
-      return false;
-    }
-  }
-
 }

@@ -9,10 +9,15 @@ export class DragDropStore {
   constructor(){
     console.log('DragDropStore...started');
   }
-
+  /**
+   * Groups
+   */
   private groups=[];
   Groups = new Subject();
   Groups$ = this.Groups.asObservable();
+  getGrops(){
+    return this.groups;
+  }
   /**
    * Create new group based on dropped field
    * @param f: field object
@@ -104,6 +109,9 @@ export class DragDropStore {
 
     //publish change
     this.Groups.next(this.groups);
+  }
+
+  moveItemTo(g:number, i:number, ){
 
   }
 

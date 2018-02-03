@@ -1,5 +1,20 @@
 
+:host{
+  flex:1;
+  display: flex;
+  flex-direction: column;
+}
 
 .rule-card{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   padding: 0px 14px;
+}
+
+.rule-body{
+  flex: 1;
+  //display: flex;
+  //flex-direction: column;
+  //border: 1px solid blue;
 }

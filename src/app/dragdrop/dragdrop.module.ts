@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { DragDropApi } from './dragdrop.svc';
+import { DragDropApi } from './dragdrop.api';
 import { DragDropStore } from './dragdrop.store';
+import { DragDropEventsRule } from './dragdrop.events';
 
 import {
   EditCard,
@@ -27,7 +28,8 @@ import {
   ],
   providers:[
     DragDropApi,
-    DragDropStore
+    DragDropStore,
+    DragDropEventsRule
   ]
 })
 export class DragDropModule { }

@@ -3,16 +3,21 @@
 <section class="rule-card">
   <h2>Rule </h2>
 
+  <div class="rule-body"
+    (dragenter)="onDragEnter($event)">
 
-  <rule-group *ngFor="let g of groups; index as i"
-    [index]="i"
-    [id]="g.id"
-    [name]="g.name"
-    [fields]="g.fields">
-  </rule-group>
+    <rule-group *ngFor="let g of groups; index as i"
+      [index]="i"
+      [id]="g.id"
+      [name]="g.name"
+      [fields]="g.fields">
+    </rule-group>
 
-  <rule-drop-group
-    *ngIf="dropZoneGroup">
-  </rule-drop-group>
+    <rule-drop-group
+      *ngIf="dropZoneGroup">
+    </rule-drop-group>
+
+  </div>
+
 
 </section>

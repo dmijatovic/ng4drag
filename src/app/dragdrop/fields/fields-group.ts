@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 
+import { DragDropEventsRule } from '../dragdrop.events';
 
 @Component({
 selector: 'app-fields-group',
@@ -15,6 +16,7 @@ export class FieldsGroup {
 
   constructor(
     //private apiFilter:CustomerSegmentApiService
+    private drag:DragDropEventsRule
   ){}
   ngOnInit(){
   }
@@ -42,13 +44,13 @@ export class FieldsGroup {
           groupName: this.groupName,
           field: field[0]
         }
-        debugger
+        //debugger
         e.dataTransfer.setData("json",JSON.stringify(data));
         e.target.id = data.field.id;
-
         e.target.style.color="black";
-        console.log("dragStart...", data);
-
+        //console.log("dragStart...", data);
+        //publish info
+        this.drag.setDragStart(data);
       }else if(field.length > 1){
         console.error("rb.filter.group...dragStart...field id is not unique...", field);
       }else {
@@ -63,6 +65,8 @@ export class FieldsGroup {
     //e.target.style.fontWeight=500;
     e.target.style.color="";
     console.log("dragEnd...", e);
+    //publish
+    this.drag.setDragEnd(true);
   }
   ngOnDestroy(){}
 }

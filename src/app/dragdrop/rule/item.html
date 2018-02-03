@@ -1,6 +1,11 @@
 
 
-<div class="rule-item">
+<div class="rule-item"
+  draggable="true"
+  (dragstart)="dragStartItem($event)"
+  (dragover)="dragOverItem($event)"
+  (dragend)="dragEndItem($event)">
+
   <h4> {{name}} </h4>
 
   <nav class="item-nav">
