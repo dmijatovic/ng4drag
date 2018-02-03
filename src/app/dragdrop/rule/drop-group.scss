@@ -1,0 +1,16 @@
+
+
+:host{
+  display: block;
+}
+
+.drop-group{
+  flex:1;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed lightgray;
+  min-height: 200px;
+  margin-top: 35px;
+}

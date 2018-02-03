@@ -1,0 +1,45 @@
+
+
+<section class="rule-item-group">
+
+  <div class="group-title">
+    {{name}}
+
+    <nav class="item-nav">
+      <span class="item-count">
+          {{ fields.length }}
+      </span>
+      <i *ngIf="open"
+        class="material-icons pointer"
+        (click)="toggleMe()">keyboard_arrow_up</i>
+      <i *ngIf="!open"
+        class="material-icons pointer"
+        (click)="toggleMe()">keyboard_arrow_down</i>
+
+      <i class="material-icons pointer"
+        (click)="deleteMe()">delete</i>
+    </nav>
+
+  </div>
+
+  <div class="group-body"
+    [class.open]="open">
+
+    <rule-item *ngFor="let f of fields; index as i"
+      [group]="index"
+      [index]="i"
+      [id]="f.id"
+      [name]="f.name"
+      [fieldType]="f.fieldType">
+    </rule-item>
+
+    <rule-drop-item
+      [group]="index"
+      [groupId]="id"
+      [groupName]="name">
+    </rule-drop-item>
+
+  </div>
+
+
+</section>

@@ -1,0 +1,13 @@
+
+
+<section class="card">
+  <h2> Fields </h2>
+
+  <app-fields-group
+      *ngFor="let f of filters"
+      [groupId]="f?.id"
+      [groupName]="f?.name"
+      [items]="f?.fields">
+  </app-fields-group>
+
+</section>

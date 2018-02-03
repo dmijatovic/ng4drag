@@ -1,0 +1,32 @@
+
+<div class="rb-filter-group">
+
+  <header class="rb-filter-group-header"
+    (click)="toggleMe()">
+    <div class="group-title">
+      {{groupName}}
+    </div>
+    <nav class="filter-group-nav">
+      <i *ngIf="open"
+        class="material-icons">keyboard_arrow_up
+      </i>
+      <i *ngIf="!open"
+        class="material-icons">keyboard_arrow_down
+      </i>
+    </nav>
+  </header>
+
+  <ul class="filter-group-body"
+    [class.open]="open">
+
+    <li *ngFor="let field of items"
+      draggable="true"
+      (dragstart)="dragStart($event)"
+      (dragend)="dragEnd($event)"
+      [attr.data-field-id]="field.id">
+      {{field.name}}
+    </li>
+
+  </ul>
+
+</div>

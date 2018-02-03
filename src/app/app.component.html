@@ -1,5 +1,22 @@
 <!--The content below is only a placeholder and can be replaced.-->
 
 <h1>
-  Welcome to {{ title }}!
+  {{ title }}!
 </h1>
+
+<section class="main-body">
+  <div class="left-panel">
+    <app-fields-card></app-fields-card>
+  </div>
+
+  <div class="main-panel">
+    <app-rule-card></app-rule-card>
+  </div>
+</section>
+
+<!--- place for edit sidepanel
+<app-edit-card
+  [setShow]="showEditPanel"
+  (toggle)="onEditToggle($event)">
+</app-edit-card>
+-->

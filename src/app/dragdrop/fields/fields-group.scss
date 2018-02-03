@@ -1,0 +1,39 @@
+
+@import '../../../material-design/material-design-colors';
+
+.rb-filter-group-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 7px 14px;
+  font-weight: 600;
+  background-color: material-color("grey","200");
+  border-bottom: 1px solid material-color("grey","300");
+}
+
+
+.filter-group-body{
+  display: none;
+  list-style: none;
+  margin: 0;
+  padding: 14px 0px;
+  background-color: #fff;
+  border-bottom: 1px solid material-color("grey","300");
+  //border: 1px solid material-color("grey","300");
+
+  li{
+    padding: 7px 14px;
+    font-weight: 600;
+    color: material-color("grey","500");
+  }
+
+  li.drag{
+    color: material-color("grey","900");
+  }
+
+}
+
+.filter-group-body.open{
+  display: block;
+}

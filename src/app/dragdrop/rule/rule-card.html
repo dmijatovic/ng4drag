@@ -1,0 +1,18 @@
+
+
+<section class="rule-card">
+  <h2>Rule </h2>
+
+
+  <rule-group *ngFor="let g of groups; index as i"
+    [index]="i"
+    [id]="g.id"
+    [name]="g.name"
+    [fields]="g.fields">
+  </rule-group>
+
+  <rule-drop-group
+    *ngIf="dropZoneGroup">
+  </rule-drop-group>
+
+</section>

@@ -1,0 +1,27 @@
+
+:host{
+  display:flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  padding: 14px;
+  box-sizing: border-box;
+}
+
+
+.main-body{
+  display:flex;
+}
+
+
+.left-panel{
+  flex:1;
+  display:flex;
+  flex-direction: column;
+}
+
+.main-panel{
+  flex:4;
+  display: flex;
+  flex-direction: column;
+}

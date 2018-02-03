@@ -6,7 +6,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, AfterViewInit {
-  title = 'Angular 4 stabile';
+  title = 'Angular 4 drag & drop demo';
 
   ngOnInit(){
     console.log("On init");
