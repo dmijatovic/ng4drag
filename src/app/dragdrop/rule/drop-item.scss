@@ -10,7 +10,7 @@
   //flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 10px;
+  height: 50px;
   opacity: 0;
 
   i{
@@ -20,7 +20,7 @@
 
 .drop-item.active{
   opacity: 0.5;
-  min-height: 60px;
+  height: 60px;
   border: 2px dashed black;
   color: black;
   border-radius: 2px;
@@ -29,10 +29,18 @@
 
 .drop-item.no-drop{
   opacity: 0.5;
-  min-height: 60px;
+  height: 60px;
   border: 2px dashed black;
   color: black;
   border-radius: 2px;
   background-color: red;
 }
+
+
+.drop-item{
+  *{
+    pointer-events: none;
+  }
+} 
+
 

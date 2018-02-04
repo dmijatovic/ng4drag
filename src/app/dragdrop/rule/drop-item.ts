@@ -65,7 +65,7 @@ export class DropItem {
     //we need to prevent default in order to allow drop
     e.preventDefault();
     //get data
-    let data = JSON.parse(e.dataTransfer.getData("json"));
+    let data = JSON.parse(e.dataTransfer.getData("text"));
     //console.log("onDrop...drop-item", data);
     //create new group
     this.store.addItemToGroup(this.group, data);

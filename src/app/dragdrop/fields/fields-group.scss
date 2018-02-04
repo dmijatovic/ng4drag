@@ -26,10 +26,16 @@
     padding: 7px 14px;
     font-weight: 600;
     color: material-color("grey","500");
+    cursor: grab;
+  }
+
+  li:mousedown{
+    cursor: move;
   }
 
   li.drag{
     color: material-color("grey","900");
+    //cursor: move
   }
 
 }

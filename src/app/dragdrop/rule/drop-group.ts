@@ -39,8 +39,9 @@ export class DropGroup {
     //we need to prevent default in order to allow drop
     e.preventDefault();
     //get data
-    let data = JSON.parse(e.dataTransfer.getData("json"));
-    //console.log("onDrop...drop-group", data);
+    debugger
+    let data = JSON.parse(e.dataTransfer.getData("text"));
+    console.log("onDrop...drop-group", data);
     //create new group
     this.store.addGroup(data);
     //remove active class

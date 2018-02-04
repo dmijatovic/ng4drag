@@ -45,9 +45,12 @@ export class FieldsGroup {
           field: field[0]
         }
         //debugger
-        e.dataTransfer.setData("json",JSON.stringify(data));
+        //NOTE! type needs to be text to support EDGE data transfer
+        e.dataTransfer.setData("text",JSON.stringify(data));
         e.target.id = data.field.id;
         e.target.style.color="black";
+        //debugger
+        e.dataTransfer.dropEffect="move"; 
         //console.log("dragStart...", data);
         //publish info
         this.drag.setDragStart(data);
