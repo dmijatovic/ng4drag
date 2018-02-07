@@ -1,9 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 import { DragDropStore } from '../dragdrop.store';
-import {
-  DragDropEventsRule,
-  DragDropEventsGroup } from '../dragdrop.events';
+import { DragDropEvents } from '../dragdrop.events';
 
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
@@ -13,7 +11,7 @@ import 'rxjs';
   selector: 'rule-group',
   templateUrl: './group.html',
   styleUrls: ['./group.scss'],
-  providers: [ DragDropEventsGroup ]
+  //providers: [ DragDropEventsGroup ]
 })
 export class RuleGroup {
   @Input() index:number;
@@ -23,21 +21,23 @@ export class RuleGroup {
 
   open:boolean = true;
   drop:boolean = false;
-  dragEnd$:Subscription;
+  dragEndField$:Subscription;
 
   constructor(
     private store: DragDropStore,
-    private ruleEnd: DragDropEventsRule,
-    private groupEnd: DragDropEventsGroup
+    private dndSvc: DragDropEvents,
+    //private groupEnd: DragDropEventsGroup
   ){}
   ngOnInit(){
 
-    this.listenForDragEnd();
+    this.listenForDragEndField();
 
   }
-
-  listenForDragEnd(){
-    this.dragEnd$ = this.ruleEnd.dragEnd$
+  /**
+   * Listen when drag end event of field fires
+   */
+  listenForDragEndField(){
+    this.dragEndField$ = this.dndSvc.dragEndField$
     .subscribe((d)=>{
       //debugger
       this.drop = !d;
@@ -56,14 +56,22 @@ export class RuleGroup {
   onDragEnter(e){
     //debugger
     this.drop = true;
+    console.log("drag enter event...", e);
   }
 
   onDragLeave(e){
     //debugger
     //this.drop = false;
+    console.log("drag leave event...", e);
+  }
+  onMouseEnter(e){
+    console.log("mouse enter event...", e);
+  }
+  onMouseLeave(e){
+    console.log("mouse leave event...", e);
   }
 
   ngOnDestroy(){
-    this.dragEnd$.unsubscribe();
+    this.dragEndField$.unsubscribe();
   }
 }

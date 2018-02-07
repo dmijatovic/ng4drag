@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { DragDropStore } from '../dragdrop.store';
-import { DragDropEventsRule } from '../dragdrop.events';
+import { DragDropEvents } from '../dragdrop.events';
 
 
 @Component({
@@ -16,13 +16,13 @@ export class RuleCard implements OnInit, OnDestroy {
   groups=[];
   Groups$:Subscription
 
-  dragStart$:Subscription;
-  dragEnd$:Subscription;
+  dragStartField$:Subscription;
+  dragEndField$:Subscription;
   dropZoneGroup:boolean = true;
 
   constructor(
     private store: DragDropStore,
-    private drag: DragDropEventsRule
+    private dndSvc: DragDropEvents
   ){}
   ngOnInit(){
     this.listenForGroups();
@@ -37,17 +37,17 @@ export class RuleCard implements OnInit, OnDestroy {
     });
   }
   listenForDragStart(){
-    this.dragStart$ = this.drag.dragStart$
+    this.dragStartField$ = this.dndSvc.dragStartField$
     .subscribe((d)=>{
       //debugger
-      console.log("dragStart...", d);
+      console.log("dragStartField...", d);
     });
   }
   listenForDragEnd(){
-    this.dragEnd$ = this.drag.dragEnd$
+    this.dragEndField$ = this.dndSvc.dragEndField$
     .subscribe((d)=>{
       //debugger
-      console.log("dragEnd...", d);
+      console.log("dragEndField...", d);
       //only if groups present
     });
   }
@@ -59,6 +59,7 @@ export class RuleCard implements OnInit, OnDestroy {
 
   ngOnDestroy(){
     this.Groups$.unsubscribe();
-    this.dragEnd$.unsubscribe();
+    this.dragStartField$.unsubscribe();
+    this.dragEndField$.unsubscribe();
   }
 }

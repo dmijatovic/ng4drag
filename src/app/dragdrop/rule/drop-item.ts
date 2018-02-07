@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 
 import { DragDropStore } from '../dragdrop.store';
-import { DragDropEventsRule } from '../dragdrop.events';
+import { DragDropEvents } from '../dragdrop.events';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -14,16 +14,24 @@ export class DropItem {
   @Input() groupId:string;
   @Input() groupName:string;
 
-  dragStart$:Subscription;
+  dragStartField$:Subscription;
   canDrop:boolean=true;
 
   constructor(
     private store:DragDropStore,
-    private drag:DragDropEventsRule
+    private dndSvc:DragDropEvents
   ){}
 
   ngOnInit(){
-    this.dragStart$ = this.drag.dragStart$
+    this.listenForDragStartField();
+  }
+  /**
+   * Listen when user start draggin field
+   * based on groupName we set canDrop flag 
+   * that indicats if field can be dropped in this group
+   */
+  listenForDragStartField(){
+    this.dragStartField$ = this.dndSvc.dragStartField$
     .subscribe((d:any)=>{
       if (this.groupName == d.groupName){
         console.log("canDrop...true");
@@ -32,9 +40,8 @@ export class DropItem {
         console.log("canDrop...false");
         this.canDrop = false;
       }
-    })
+    });
   }
-
   onDragEnter(e){
     //console.log("dragEnter...drop-item", e);
     //add class

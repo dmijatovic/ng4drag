@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { DragDropApi } from './dragdrop.api';
 import { DragDropStore } from './dragdrop.store';
-import { DragDropEventsRule } from './dragdrop.events';
+import { DragDropEvents } from './dragdrop.events';
 
 import {
   EditCard,
@@ -29,7 +29,7 @@ import {
   providers:[
     DragDropApi,
     DragDropStore,
-    DragDropEventsRule
+    DragDropEvents
   ]
 })
 export class DragDropModule { }

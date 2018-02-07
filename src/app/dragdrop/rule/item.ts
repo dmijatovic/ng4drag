@@ -34,7 +34,7 @@ export class RuleItem {
   }
 
   dragStartItem(e){
-    console.log("dragstart item");
+    console.log("dragstart item...", this.index);
     let group = this.store.getGrops()[this.group];
     //debugger
     let data = {
@@ -55,8 +55,8 @@ export class RuleItem {
     e.target.id = data.field.id;
   }
 
-  dragOverItem(e){
-    console.log("dragover item", this.index);
+  dragOverItem(e){    
+    //console.log("dragover item", this.index);
   }
 
   dragEndItem(e){

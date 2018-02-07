@@ -20,3 +20,6 @@ More info about drag events
 - https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 
 
+## Remarks
+Using mouseenter and mouseleave events on parent to show drag-drop component might be more sutable in this example then using dragenter & dragleave for item dropping.
+

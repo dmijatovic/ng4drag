@@ -2,7 +2,9 @@
 
 <section class="rule-item-group"
   (dragenter)="onDragEnter($event)"
-  (dragleave)="onDragLeave($event)">
+  (dragleave)="onDragLeave($event)"
+  (mouseenter)="onMouseEnter($event)"
+  (mouseleave)="onMouseLeave($event)">
 
   <div class="group-title">
     {{name}}
