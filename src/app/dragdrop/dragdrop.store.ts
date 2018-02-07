@@ -57,16 +57,25 @@ export class DragDropStore {
 
   /**
    * Add niew field item to existing group
+   * at specific position
    * @param i:group index,
+   * @param p:position to insert item
    * @param f:field object
    */
-  addItemToGroup(i:number, f:any){
+  addItemToGroup(i:number, p:number, f:any){
     //debugger
     let all=[],
+        fields=[],
         g=this.groups[i];
 
-    //add field to group
-    g['fields'].push(f.field);
+    //debugger
+    //add field to group at specific position
+    fields = [
+      ...g['fields'].slice(0,p),
+      f.field,
+      ...g['fields'].slice(p),
+    ]
+    g['fields'] = fields;
 
     if (this.groups.length==1){
       //only one group that needs to be updated
@@ -111,7 +120,7 @@ export class DragDropStore {
     this.Groups.next(this.groups);
   }
 
-  moveItemTo(g:number, i:number, ){
+  moveItemTo(g:number, i:number, data){
 
   }
 

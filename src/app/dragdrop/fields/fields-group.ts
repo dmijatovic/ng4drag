@@ -50,7 +50,7 @@ export class FieldsGroup {
         e.target.id = data.field.id;
         e.target.style.color="black";
         //debugger
-        e.dataTransfer.dropEffect="move"; 
+        e.dataTransfer.dropEffect="move";
         //console.log("dragStart...", data);
         //publish info
         this.dndSvc.setDragStartField(data);
@@ -67,7 +67,7 @@ export class FieldsGroup {
   dragEnd(e){
     //e.target.style.fontWeight=500;
     e.target.style.color="";
-    console.log("dragEnd...", e);
+    console.log("dragEndField...", e);
     //publish
     this.dndSvc.setDragEndField(true);
   }

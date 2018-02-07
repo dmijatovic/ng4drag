@@ -5,7 +5,13 @@
 
 .rule-item{
   display:flex;
-  justify-content: space-between
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 0px;
+}
+
+.item-title{
+  font-weight: 600;
 }
 
 .item-nav{

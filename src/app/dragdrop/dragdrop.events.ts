@@ -49,17 +49,3 @@ export class DragDropEvents {
 
 
 }
-
-
-@Injectable()
-export class DragDropEventsGroup {
-  constructor(){
-    console.log('DragDropEventsGroup...started');
-  }
-
-  dragEnd = new Subject()
-  dragEnd$ = this.dragEnd.asObservable();
-  setDragEnd(b){
-    this.dragEnd.next(b);
-  }
-}

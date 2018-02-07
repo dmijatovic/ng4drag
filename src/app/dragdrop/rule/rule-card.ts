@@ -40,14 +40,14 @@ export class RuleCard implements OnInit, OnDestroy {
     this.dragStartField$ = this.dndSvc.dragStartField$
     .subscribe((d)=>{
       //debugger
-      console.log("dragStartField...", d);
+      //console.log("dragStartField...", d);
     });
   }
   listenForDragEnd(){
     this.dragEndField$ = this.dndSvc.dragEndField$
     .subscribe((d)=>{
       //debugger
-      console.log("dragEndField...", d);
+      //console.log("dragEndField...", d);
       //only if groups present
     });
   }

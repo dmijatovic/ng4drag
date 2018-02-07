@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 import { DragDropStore } from '../dragdrop.store';
+import { DragDropEvents } from '../dragdrop.events';
 
 @Component({
   selector: 'rule-item',
@@ -9,6 +10,8 @@ import { DragDropStore } from '../dragdrop.store';
 })
 export class RuleItem {
   @Input() group:number;
+  @Input() groupId:string;
+  @Input() groupName:string;
   @Input() index:number;
   @Input() id:string;
   @Input() name:string;
@@ -18,9 +21,11 @@ export class RuleItem {
   @Input() values=[];
 
   targetIndex:number;
+  canDrop:boolean=false;
 
   constructor(
-    private store: DragDropStore
+    private store: DragDropStore,
+    private dndSvc: DragDropEvents
   ){}
 
   editMe(){
@@ -33,13 +38,12 @@ export class RuleItem {
     this.store.deleteItem(this.group, this.index);
   }
 
-  dragStartItem(e){
+  onDragStartItem(e){
     console.log("dragstart item...", this.index);
-    let group = this.store.getGrops()[this.group];
+    //let group = this.store.getGrops()[this.group];
     //debugger
     let data = {
-      groupId: group.id,
-      groupName: group.name,
+      group: this.group,
       field: {
         id: this.id,
         index: this.index,
@@ -51,16 +55,36 @@ export class RuleItem {
       }
     }
     //debugger
-    e.dataTransfer.setData("json",JSON.stringify(data));
+    e.dataTransfer.setData("text",JSON.stringify(data));
     e.target.id = data.field.id;
+    //set item dragstart event
+    this.dndSvc.setDragStartItem(data);
   }
 
-  dragOverItem(e){    
-    //console.log("dragover item", this.index);
+  onDragOverItem(e){
+    e.preventDefault();
+    console.log("dragover item", this.index, e);
+    this.canDrop = true;
   }
 
-  dragEndItem(e){
+  onDropItem(e){
+    e.preventDefault();
+    //get data
+    let data = JSON.parse(e.dataTransfer.getData("text"));
+    console.log("drop item...at", this.index, e);
+    debugger
+    if (this.index < data.field.index){
+      console.log("insert...", data.field.index,"...before...", this.index, data);
+      this.store.moveItemTo(this.group, this.index, data);
+    }else{
+      console.log("insert...", data.field.index,"...after...", this.index, data);
+      this.store.moveItemTo(this.group, this.index, data);
+    }
+  }
+
+  onDragEndItem(e){
     console.log("dragend item");
+    this.dndSvc.setDragEndItem(true);
   }
 
 }

@@ -25,8 +25,7 @@ export class RuleGroup {
 
   constructor(
     private store: DragDropStore,
-    private dndSvc: DragDropEvents,
-    //private groupEnd: DragDropEventsGroup
+    private dndSvc: DragDropEvents
   ){}
   ngOnInit(){
 
@@ -35,6 +34,7 @@ export class RuleGroup {
   }
   /**
    * Listen when drag end event of field fires
+   * then we hide drop area (onDragLeave does not produces desired result)
    */
   listenForDragEndField(){
     this.dragEndField$ = this.dndSvc.dragEndField$
@@ -53,22 +53,45 @@ export class RuleGroup {
     this.store.deleteGroup(this.index);
   }
 
+  /**
+   * Fires when drag enters group
+   * NOTE! it fires also when drag enters from the child!!!
+   * not usefull in current setup
+   * @param e
+   */
   onDragEnter(e){
     //debugger
-    this.drop = true;
-    console.log("drag enter event...", e);
+    //this.drop = true;
+    //console.log("drag enter event...drop=true", e);
   }
-
+  /**
+   * Fires when drag leaves item
+   * NOTE! it fires also when drag enters child!!!
+   * not usefull in current setup
+   * @param e
+   */
   onDragLeave(e){
     //debugger
     //this.drop = false;
-    console.log("drag leave event...", e);
+    //console.log("drag leave event...", e);
   }
+  /**
+   * Event fires when mouse enters a group
+   * NOTE! this event does not fires when
+   * user drags item (drag event is fired)
+   * @param e
+   */
   onMouseEnter(e){
-    console.log("mouse enter event...", e);
+    //console.log("mouse enter event...", e);
   }
+  /**
+   * Event fires when mouse leaves a group
+   * NOTE! this event does not fires when
+   * user drags item (drag event is fired)
+   * @param e
+   */
   onMouseLeave(e){
-    console.log("mouse leave event...", e);
+    //console.log("mouse leave event...", e);
   }
 
   ngOnDestroy(){

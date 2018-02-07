@@ -31,6 +31,8 @@
 
     <rule-item *ngFor="let f of fields; index as i"
       [group]="index"
+      [groupId]="id"
+      [groupName]="name"
       [index]="i"
       [id]="f.id"
       [name]="f.name"
@@ -38,6 +40,7 @@
     </rule-item>
 
     <rule-drop-item
+      [index]="fields.length"
       [group]="index"
       [groupId]="id"
       [groupName]="name">

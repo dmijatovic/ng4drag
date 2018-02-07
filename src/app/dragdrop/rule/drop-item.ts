@@ -10,11 +10,15 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./drop-item.scss']
 })
 export class DropItem {
+  //item index
+  @Input() index:number;
+  //group index
   @Input() group:number;
   @Input() groupId:string;
   @Input() groupName:string;
 
   dragStartField$:Subscription;
+  dragEndField$:Subscription;
   canDrop:boolean=true;
 
   constructor(
@@ -24,10 +28,11 @@ export class DropItem {
 
   ngOnInit(){
     this.listenForDragStartField();
+    this.listenForDragEndField();
   }
   /**
    * Listen when user start draggin field
-   * based on groupName we set canDrop flag 
+   * based on groupName we set canDrop flag
    * that indicats if field can be dropped in this group
    */
   listenForDragStartField(){
@@ -40,6 +45,18 @@ export class DropItem {
         console.log("canDrop...false");
         this.canDrop = false;
       }
+    });
+  }
+  /**
+   * Listen when user start draggin field
+   * based on groupName we set canDrop flag
+   * that indicats if field can be dropped in this group
+   */
+  listenForDragEndField(){
+    this.dragEndField$ = this.dndSvc.dragEndField$
+    .subscribe((d:any)=>{
+      //reset to default
+      this.canDrop = true;
     });
   }
   onDragEnter(e){
@@ -71,11 +88,12 @@ export class DropItem {
   onDrop(e){
     //we need to prevent default in order to allow drop
     e.preventDefault();
+    //debugger
     //get data
     let data = JSON.parse(e.dataTransfer.getData("text"));
     //console.log("onDrop...drop-item", data);
     //create new group
-    this.store.addItemToGroup(this.group, data);
+    this.store.addItemToGroup(this.group, this.index, data);
     //remove active class
     e.target.classList.remove("active");
     e.target.classList.remove("no-drop");

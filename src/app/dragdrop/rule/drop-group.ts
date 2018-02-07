@@ -39,7 +39,7 @@ export class DropGroup {
     //we need to prevent default in order to allow drop
     e.preventDefault();
     //get data
-    debugger
+    //debugger
     let data = JSON.parse(e.dataTransfer.getData("text"));
     console.log("onDrop...drop-group", data);
     //create new group

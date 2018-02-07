@@ -1,12 +1,19 @@
 
+<rule-drop-item
+  [index]="index"
+  [group]="group"
+  [groupId]="groupId"
+  [groupName]="groupName">
+</rule-drop-item>
 
 <div class="rule-item"
   draggable="true"
-  (dragstart)="dragStartItem($event)"
-  (dragover)="dragOverItem($event)"
-  (dragend)="dragEndItem($event)">
+  (dragstart)="onDragStartItem($event)"
+  (dragover)="onDragOverItem($event)"
+  (drop)="onDropItem($event)"
+  (dragend)="onDragEndItem($event)">
 
-  <h4> {{name}} </h4>
+  <div class="item-title"> {{name}} </div>
 
   <nav class="item-nav">
     <i class="material-icons pointer"
