@@ -39,10 +39,15 @@ export class DropItem {
     this.dragStartItem$ = this.dndSvc.dragStartItem$
     .subscribe((d:any)=>{
       if (this.groupName == d.groupName){
-        console.log("canDrop...true", d);
-        this.canDrop = true;
+        //console.log("canDrop...true", d);
+        if (d.action=="MOVE_GROUP" && d.group == this.group){
+          console.warn("can move group into itself...", this.group);
+          this.canDrop = false;
+        }else{
+          this.canDrop = true;
+        }
       }else{
-        console.log("canDrop...false", d);
+        //console.log("canDrop...false", d);
         this.canDrop = false;
       }
     });
@@ -111,7 +116,7 @@ export class DropItem {
         this.moveItem(data);
         break;
       default:
-        console.warn("drop-item.reducer...no action defined in dropped data");
+        console.warn(`drop-item.reducer...unknown action...${data.action}...defined in dropped data`);
     }
   }
   /**

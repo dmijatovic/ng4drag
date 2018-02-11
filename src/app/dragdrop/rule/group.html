@@ -1,12 +1,11 @@
 
 
-<section class="rule-item-group"
-  (dragenter)="onDragEnter($event)"
-  (dragleave)="onDragLeave($event)"
-  (mouseenter)="onMouseEnter($event)"
-  (mouseleave)="onMouseLeave($event)">
+<section class="rule-item-group">
 
-  <div class="group-title">
+  <div class="group-title"
+    draggable="true"
+    (dragstart)="onDragStartItem($event)"
+    (dragend)="onDragEndItem($event)">
     {{name}}
 
     <nav class="item-nav">
