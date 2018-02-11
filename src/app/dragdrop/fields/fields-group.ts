@@ -40,6 +40,7 @@ export class FieldsGroup {
       if (field.length==1){
         //set drag data
         let data = {
+          action:"ADD_ITEM",
           groupId: this.groupId,
           groupName: this.groupName,
           field: field[0]

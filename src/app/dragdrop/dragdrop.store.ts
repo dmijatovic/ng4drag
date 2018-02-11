@@ -119,9 +119,4 @@ export class DragDropStore {
     //publish change
     this.Groups.next(this.groups);
   }
-
-  moveItemTo(g:number, i:number, data){
-
-  }
-
 }

@@ -43,6 +43,7 @@ export class RuleItem {
     //let group = this.store.getGrops()[this.group];
     //debugger
     let data = {
+      action:"MOVE_ITEM",
       group: this.group,
       field: {
         id: this.id,
@@ -60,13 +61,13 @@ export class RuleItem {
     //set item dragstart event
     this.dndSvc.setDragStartItem(data);
   }
-
+  /* not used
   onDragOverItem(e){
     e.preventDefault();
     console.log("dragover item", this.index, e);
     this.canDrop = true;
-  }
-
+  }*/
+  /* not used
   onDropItem(e){
     e.preventDefault();
     //get data
@@ -80,7 +81,7 @@ export class RuleItem {
       console.log("insert...", data.field.index,"...after...", this.index, data);
       this.store.moveItemTo(this.group, this.index, data);
     }
-  }
+  }*/
 
   onDragEndItem(e){
     console.log("dragend item");

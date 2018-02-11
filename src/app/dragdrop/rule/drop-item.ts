@@ -92,10 +92,54 @@ export class DropItem {
     //get data
     let data = JSON.parse(e.dataTransfer.getData("text"));
     //console.log("onDrop...drop-item", data);
-    //create new group
-    this.store.addItemToGroup(this.group, this.index, data);
+    //decide what action to apply to droppet data
+    this.reducer(data);
     //remove active class
     e.target.classList.remove("active");
     e.target.classList.remove("no-drop");
+  }
+
+  reducer(data){
+    //debugger
+    switch (data.action.toUpperCase()){
+      case "ADD_ITEM":
+        //create new group
+        this.store.addItemToGroup(this.group, this.index, data);
+        break;
+      case "MOVE_ITEM":
+        //first delete item
+        this.moveItem(data);
+        break;
+      default:
+        console.warn("No action defined in dropped data");
+    }
+  }
+  /**
+   * Move item involves add item at one position
+   * and deleting old item from its previous position
+   * depending on 'move direction' the order of add/delete is important
+   */
+  moveItem(data){
+    //moving items within same group
+    if (data.group == this.group){
+      //same group
+      if (this.index > data.field.index){
+        //add item
+        this.store.addItemToGroup(this.group, this.index, data);
+        //delete item
+        this.store.deleteItem(data.group, data.field.index);
+      }else{
+        //delete item
+        this.store.deleteItem(data.group, data.field.index);
+        //add item
+        this.store.addItemToGroup(this.group, this.index, data);
+      }
+    }else{
+      //different groups
+      //delete item
+      this.store.deleteItem(data.group, data.field.index);
+      //add item
+      this.store.addItemToGroup(this.group, this.index, data);
+    }
   }
 }
