@@ -54,7 +54,9 @@ export class FieldsGroup {
         e.dataTransfer.dropEffect="move";
         //console.log("dragStart...", data);
         //publish info
-        this.dndSvc.setDragStartField(data);
+        //this.dndSvc.setDragStartField(data);
+        //set item dragstart event
+        this.dndSvc.setDragStartItem(data);
       }else if(field.length > 1){
         console.error("rb.filter.group...dragStart...field id is not unique...", field);
       }else {
@@ -68,9 +70,9 @@ export class FieldsGroup {
   dragEnd(e){
     //e.target.style.fontWeight=500;
     e.target.style.color="";
-    console.log("dragEndField...", e);
+    console.log("dragEndItem...", e);
     //publish
-    this.dndSvc.setDragEndField(true);
+    this.dndSvc.setDragEndItem(true);
   }
   ngOnDestroy(){}
 }

@@ -17,8 +17,8 @@ export class DropItem {
   @Input() groupId:string;
   @Input() groupName:string;
 
-  dragStartField$:Subscription;
-  dragEndField$:Subscription;
+  dragStartItem$:Subscription;
+  dragEndItem$:Subscription;
   canDrop:boolean=true;
 
   constructor(
@@ -27,22 +27,22 @@ export class DropItem {
   ){}
 
   ngOnInit(){
-    this.listenForDragStartField();
-    this.listenForDragEndField();
+    this.listenForDragStartItem();
+    this.listenForDragEndItem();
   }
   /**
    * Listen when user start draggin field
    * based on groupName we set canDrop flag
    * that indicats if field can be dropped in this group
    */
-  listenForDragStartField(){
-    this.dragStartField$ = this.dndSvc.dragStartField$
+  listenForDragStartItem(){
+    this.dragStartItem$ = this.dndSvc.dragStartItem$
     .subscribe((d:any)=>{
       if (this.groupName == d.groupName){
-        console.log("canDrop...true");
+        console.log("canDrop...true", d);
         this.canDrop = true;
       }else{
-        console.log("canDrop...false");
+        console.log("canDrop...false", d);
         this.canDrop = false;
       }
     });
@@ -52,8 +52,8 @@ export class DropItem {
    * based on groupName we set canDrop flag
    * that indicats if field can be dropped in this group
    */
-  listenForDragEndField(){
-    this.dragEndField$ = this.dndSvc.dragEndField$
+  listenForDragEndItem(){
+    this.dragEndItem$ = this.dndSvc.dragEndItem$
     .subscribe((d:any)=>{
       //reset to default
       this.canDrop = true;
@@ -111,7 +111,7 @@ export class DropItem {
         this.moveItem(data);
         break;
       default:
-        console.warn("No action defined in dropped data");
+        console.warn("drop-item.reducer...no action defined in dropped data");
     }
   }
   /**

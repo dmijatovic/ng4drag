@@ -20,7 +20,7 @@ export class RuleGroup {
   @Input() fields=[];
 
   open:boolean = true;
-  drop:boolean = false;
+  //drop:boolean = false;
   dragEndField$:Subscription;
 
   constructor(
@@ -29,20 +29,20 @@ export class RuleGroup {
   ){}
   ngOnInit(){
 
-    this.listenForDragEndField();
+    //this.listenForDragEndField();
 
   }
   /**
    * Listen when drag end event of field fires
    * then we hide drop area (onDragLeave does not produces desired result)
-   */
+
   listenForDragEndField(){
     this.dragEndField$ = this.dndSvc.dragEndField$
     .subscribe((d)=>{
       //debugger
       this.drop = !d;
     });
-  }
+  }*/
 
   toggleMe(){
     this.open = !this.open;
@@ -95,6 +95,6 @@ export class RuleGroup {
   }
 
   ngOnDestroy(){
-    this.dragEndField$.unsubscribe();
+    //this.dragEndField$.unsubscribe();
   }
 }

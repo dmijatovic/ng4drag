@@ -41,11 +41,41 @@ export class DropGroup {
     //get data
     //debugger
     let data = JSON.parse(e.dataTransfer.getData("text"));
-    console.log("onDrop...drop-group", data);
-    //create new group
-    this.store.addGroup(data);
+    //console.log("onDrop...drop-group", data);
+    //decide on action
+    this.reducer(data);
     //remove active class
     e.target.classList.remove("active");
   }
-
+  /**
+   * Decide on action to apply based on action type
+   * provided in data
+   * @param data
+   */
+  reducer(data){
+    //debugger
+    switch (data.action.toUpperCase()){
+      case "ADD_ITEM":
+        //create new group at the bottom
+        this.store.addGroup(data);
+        //this.store.addItemToGroup(this.group, this.index, data);
+        break;
+      case "MOVE_ITEM":
+        this.moveItem(data);
+        break;
+      default:
+        console.warn("drop-group.reducer...no action defined in dropped data");
+    }
+  }
+  /**
+   * Move item and create group involves two actions
+   * add new group and remove item from its original group
+   * @param data
+   */
+  moveItem(data){
+    //create new group at the bottom
+    this.store.addGroup(data);
+    //delete item from its previous position
+    this.store.deleteItem(data.group, data.field.index);
+  }
 }

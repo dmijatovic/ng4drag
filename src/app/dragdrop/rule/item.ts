@@ -45,6 +45,8 @@ export class RuleItem {
     let data = {
       action:"MOVE_ITEM",
       group: this.group,
+      groupId: this.groupId,
+      groupName: this.groupName,
       field: {
         id: this.id,
         index: this.index,

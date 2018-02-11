@@ -26,8 +26,6 @@ export class RuleCard implements OnInit, OnDestroy {
   ){}
   ngOnInit(){
     this.listenForGroups();
-    this.listenForDragStart();
-    this.listenForDragEnd();
   }
   listenForGroups(){
     this.Groups$ = this.store.Groups$
@@ -36,22 +34,6 @@ export class RuleCard implements OnInit, OnDestroy {
       this.groups = g;
     });
   }
-  listenForDragStart(){
-    this.dragStartField$ = this.dndSvc.dragStartField$
-    .subscribe((d)=>{
-      //debugger
-      //console.log("dragStartField...", d);
-    });
-  }
-  listenForDragEnd(){
-    this.dragEndField$ = this.dndSvc.dragEndField$
-    .subscribe((d)=>{
-      //debugger
-      //console.log("dragEndField...", d);
-      //only if groups present
-    });
-  }
-
   onDragEnter(e){
     //console.log("dragEnter...rule-body");
     //this.dropZoneGroup=true;
@@ -59,7 +41,5 @@ export class RuleCard implements OnInit, OnDestroy {
 
   ngOnDestroy(){
     this.Groups$.unsubscribe();
-    this.dragStartField$.unsubscribe();
-    this.dragEndField$.unsubscribe();
   }
 }

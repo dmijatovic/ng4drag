@@ -7,27 +7,6 @@ export class DragDropEvents {
   constructor(){
     console.log('DragDropEvents...service started');
   }
-//------------------------------
-// DRAG FIELD EVENTS
-  /**
-   * Drag start event
-   * published when user start dragging field
-   */
-  dragStartField = new Subject()
-  dragStartField$ = this.dragStartField.asObservable();
-  setDragStartField(f:any){
-    this.dragStartField.next(f);
-  }
-  /**
-   * Drag end event
-   * published when user drops field somewhere
-   * note! invalid drops are included too
-  */
-  dragEndField = new Subject()
-  dragEndField$ = this.dragEndField.asObservable();
-  setDragEndField(b){
-    this.dragEndField.next(b);
-  }
 //--------------------
 // DRAG ITEM EVENTS
   dragStartItem = new Subject()

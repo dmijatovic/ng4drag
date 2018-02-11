@@ -107,16 +107,22 @@ export class DragDropStore {
     let group = {
       ...this.groups[g]
     };
+
     //remove field at position i
     group.fields = [
       ...group.fields.slice(0, i),
       ...group.fields.slice(i + 1)
     ];
 
-    //overwrite old group
-    this.groups[g] = group;
-
-    //publish change
-    this.Groups.next(this.groups);
+    if (group.fields.length == 0){
+      //if no items left then delete
+      //complete group!
+      this.deleteGroup(g);
+    }else{
+      //overwrite old group
+      this.groups[g] = group;
+      //publish change
+      this.Groups.next(this.groups);
+    }
   }
 }
