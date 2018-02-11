@@ -9,10 +9,10 @@ export class AppComponent implements OnInit, AfterViewInit {
   title = 'Angular 4 drag & drop test';
 
   ngOnInit(){
-    console.log("On init");
+    //console.log("On init");
   }
 
   ngAfterViewInit(){
-    console.log("After view init");
+    //console.log("After view init");
   }
 }

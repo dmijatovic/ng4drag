@@ -29,21 +29,7 @@ export class RuleGroup {
   ){}
   ngOnInit(){
 
-    //this.listenForDragEndField();
-
   }
-  /**
-   * Listen when drag end event of field fires
-   * then we hide drop area (onDragLeave does not produces desired result)
-
-  listenForDragEndField(){
-    this.dragEndField$ = this.dndSvc.dragEndField$
-    .subscribe((d)=>{
-      //debugger
-      this.drop = !d;
-    });
-  }*/
-
   toggleMe(){
     this.open = !this.open;
   }
@@ -53,45 +39,24 @@ export class RuleGroup {
     this.store.deleteGroup(this.index);
   }
 
-  /**
-   * Fires when drag enters group
-   * NOTE! it fires also when drag enters from the child!!!
-   * not usefull in current setup
-   * @param e
-   */
-  onDragEnter(e){
+  onDragStartItem(e){
+    console.log("dragstart group...", this.index);
+    let data = {
+      action:"MOVE_GROUP",
+      group: this.index,
+      groupId: this.id,
+      groupName: this.name,
+      field: this.fields
+    }
     //debugger
-    //this.drop = true;
-    //console.log("drag enter event...drop=true", e);
+    e.dataTransfer.setData("text",JSON.stringify(data));
+    //set item dragstart event
+    this.dndSvc.setDragStartItem(data);
   }
-  /**
-   * Fires when drag leaves item
-   * NOTE! it fires also when drag enters child!!!
-   * not usefull in current setup
-   * @param e
-   */
-  onDragLeave(e){
-    //debugger
-    //this.drop = false;
-    //console.log("drag leave event...", e);
-  }
-  /**
-   * Event fires when mouse enters a group
-   * NOTE! this event does not fires when
-   * user drags item (drag event is fired)
-   * @param e
-   */
-  onMouseEnter(e){
-    //console.log("mouse enter event...", e);
-  }
-  /**
-   * Event fires when mouse leaves a group
-   * NOTE! this event does not fires when
-   * user drags item (drag event is fired)
-   * @param e
-   */
-  onMouseLeave(e){
-    //console.log("mouse leave event...", e);
+
+  onDragEndItem(e){
+    console.log("dragend group...", this.index);
+    this.dndSvc.setDragEndItem(true);
   }
 
   ngOnDestroy(){

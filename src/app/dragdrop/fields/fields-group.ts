@@ -70,7 +70,7 @@ export class FieldsGroup {
   dragEnd(e){
     //e.target.style.fontWeight=500;
     e.target.style.color="";
-    console.log("dragEndItem...", e);
+    //console.log("dragEndItem...", e);
     //publish
     this.dndSvc.setDragEndItem(true);
   }

@@ -58,13 +58,12 @@ export class DropGroup {
       case "ADD_ITEM":
         //create new group at the bottom
         this.store.addGroup(data);
-        //this.store.addItemToGroup(this.group, this.index, data);
         break;
       case "MOVE_ITEM":
         this.moveItem(data);
         break;
       default:
-        console.warn("drop-group.reducer...no action defined in dropped data");
+        console.warn(`drop-group.reducer...unknown action...${data.action}...defined in dropped data`);
     }
   }
   /**
