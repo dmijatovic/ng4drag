@@ -1,5 +1,7 @@
 
 <rule-drop-item
+  *ngIf="showDrop"
+  [canDrop]="canDrop"
   [index]="index"
   [group]="group"
   [groupId]="groupId"
@@ -9,6 +11,7 @@
 <div class="rule-item"
   draggable="true"
   (dragstart)="onDragStartItem($event)"
+  (dragover)="onDragOverItem($event)"
   (dragend)="onDragEndItem($event)">
 
   <div class="item-title"> {{name}} </div>

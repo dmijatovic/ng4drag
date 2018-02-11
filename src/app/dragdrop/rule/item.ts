@@ -1,14 +1,16 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 
 import { DragDropStore } from '../dragdrop.store';
 import { DragDropEvents } from '../dragdrop.events';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'rule-item',
   templateUrl: './item.html',
   styleUrls: ['./item.scss']
 })
-export class RuleItem {
+export class RuleItem implements OnInit, OnDestroy{
+  @Input() canDrop:boolean=false;
   @Input() group:number;
   @Input() groupId:string;
   @Input() groupName:string;
@@ -20,13 +22,44 @@ export class RuleItem {
   @Input() operators=[];
   @Input() values=[];
 
-  targetIndex:number;
-  canDrop:boolean=false;
+  showDrop:boolean=false;
+  dragOverItem$:Subscription;
+  dragEndItem$:Subscription;
 
   constructor(
     private store: DragDropStore,
     private dndSvc: DragDropEvents
   ){}
+
+  ngOnInit(){
+    this.listenForDragEndItem();
+    this.listenForDragoverItem();
+  }
+  listenForDragoverItem(){
+    this.dragOverItem$ = this.dndSvc.dragOverItem$
+    .subscribe((d:any)=>{
+      //filter out request for me
+      if (d.index == this.index && d.group == this.group){
+        //console.log("I received dragover request over me", d);
+        this.showDrop = true;
+      }else{
+        this.showDrop = false;
+      }
+    });
+  }
+   /**
+   * Listen when user start draggin field
+   * based on groupName we set canDrop flag
+   * that indicats if field can be dropped in this group
+   */
+  listenForDragEndItem(){
+    this.dragEndItem$ = this.dndSvc.dragEndItem$
+    .subscribe((d:any)=>{
+      //reset to default
+      //console.log("listenForDragEndItem...showDrop...set to false");
+      this.showDrop = false;
+    });
+  }
 
   editMe(){
     console.log("Edit...", this.id, this.group, this.index);
@@ -34,12 +67,11 @@ export class RuleItem {
 
   deleteMe(){
     console.log("Delete...", this.id, this.group, this.index);
-
     this.store.deleteItem(this.group, this.index);
   }
 
   onDragStartItem(e){
-    console.log("dragstart item...", this.index);
+    console.log("dragstart item...", this.group,"...", this.index);
     //let group = this.store.getGrops()[this.group];
     //debugger
     let data = {
@@ -59,35 +91,32 @@ export class RuleItem {
     }
     //debugger
     e.dataTransfer.setData("text",JSON.stringify(data));
-    e.target.id = data.field.id;
     //set item dragstart event
     this.dndSvc.setDragStartItem(data);
   }
-  /* not used
+  /* fire dragover event over specific item */
   onDragOverItem(e){
     e.preventDefault();
-    console.log("dragover item", this.index, e);
-    this.canDrop = true;
-  }*/
-  /* not used
-  onDropItem(e){
-    e.preventDefault();
-    //get data
-    let data = JSON.parse(e.dataTransfer.getData("text"));
-    console.log("drop item...at", this.index, e);
-    debugger
-    if (this.index < data.field.index){
-      console.log("insert...", data.field.index,"...before...", this.index, data);
-      this.store.moveItemTo(this.group, this.index, data);
-    }else{
-      console.log("insert...", data.field.index,"...after...", this.index, data);
-      this.store.moveItemTo(this.group, this.index, data);
+    let data={
+      group: this.group,
+      index: this.index,
+      item: e
     }
-  }*/
-
-  onDragEndItem(e){
-    console.log("dragend item");
-    this.dndSvc.setDragEndItem(true);
+    //console.log("dragover item...", data);
+    //this.canDrop = true;
+    this.dndSvc.setDragOverItem(data);
   }
-
+  /**
+   * onDragEndItem does not trigger dragend event when drop is performed
+   * therefore this event is executed from onDrop
+   * @param e
+   */
+  onDragEndItem(e){
+    console.log("dragend item...", this.group,"...", this.index);
+    //this.dndSvc.setDragEndItem(true);
+  }
+  ngOnDestroy(){
+    this.dragEndItem$.unsubscribe();
+    this.dragOverItem$.unsubscribe();
+  }
 }

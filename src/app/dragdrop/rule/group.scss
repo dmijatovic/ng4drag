@@ -52,4 +52,8 @@
   //transform: scale(1);
 }
 
-
+.group-drop-item{
+  display: flex;
+  flex-direction: column;
+  padding-right: 14px;
+}

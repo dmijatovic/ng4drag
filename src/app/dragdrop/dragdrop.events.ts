@@ -16,6 +16,16 @@ export class DragDropEvents {
   }
 
   /**
+   * Dragover item event
+   * published when user drags item over another item
+  */
+  dragOverItem = new Subject()
+  dragOverItem$ = this.dragOverItem.asObservable();
+  setDragOverItem(b){
+    this.dragOverItem.next(b);
+  }
+
+  /**
    * Drag end event
    * published when user drops Item somewhere
    * note! invalid drops are included too
@@ -24,6 +34,14 @@ export class DragDropEvents {
   dragEndItem$ = this.dragEndItem.asObservable();
   setDragEndItem(b){
     this.dragEndItem.next(b);
+  }
+
+  //--------------------
+  // DRAG ENTER GROUP
+  dragEnterGroup = new Subject()
+  dragEnterGroup$ = this.dragEnterGroup.asObservable();
+  setDragEnterGroup(g:any){
+    this.dragEnterGroup.next(g);
   }
 
 

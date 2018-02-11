@@ -1,6 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 
 import { DragDropStore } from '../dragdrop.store';
+import { DragDropEvents } from '../dragdrop.events';
 
 @Component({
   selector: 'rule-drop-group',
@@ -8,8 +9,10 @@ import { DragDropStore } from '../dragdrop.store';
   styleUrls: ['./drop-group.scss']
 })
 export class DropGroup {
+  @Input() index:number
   constructor(
-    private store:DragDropStore
+    private store:DragDropStore,
+    private dndSvc:DragDropEvents
   ){}
 
   onDragEnter(e){
@@ -28,11 +31,15 @@ export class DropGroup {
     e.target.classList.remove("active");
   }
 
-
   onDragOver(e){
     //we need to prevent default in order to allow drop
     e.preventDefault();
     //console.log("dragOver...drop-group");
+    this.dndSvc.setDragEnterGroup({
+      id: null,
+      index: this.index,
+      name: null
+    });
   }
 
   onDrop(e){

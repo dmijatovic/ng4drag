@@ -16,10 +16,7 @@ export class DropItem {
   @Input() group:number;
   @Input() groupId:string;
   @Input() groupName:string;
-
-  dragStartItem$:Subscription;
-  dragEndItem$:Subscription;
-  canDrop:boolean=true;
+  @Input() canDrop:boolean=true;
 
   constructor(
     private store:DragDropStore,
@@ -27,43 +24,9 @@ export class DropItem {
   ){}
 
   ngOnInit(){
-    this.listenForDragStartItem();
-    this.listenForDragEndItem();
+
   }
-  /**
-   * Listen when user start draggin field
-   * based on groupName we set canDrop flag
-   * that indicats if field can be dropped in this group
-   */
-  listenForDragStartItem(){
-    this.dragStartItem$ = this.dndSvc.dragStartItem$
-    .subscribe((d:any)=>{
-      if (this.groupName == d.groupName){
-        //console.log("canDrop...true", d);
-        if (d.action=="MOVE_GROUP" && d.group == this.group){
-          console.warn("can move group into itself...", this.group);
-          this.canDrop = false;
-        }else{
-          this.canDrop = true;
-        }
-      }else{
-        //console.log("canDrop...false", d);
-        this.canDrop = false;
-      }
-    });
-  }
-  /**
-   * Listen when user start draggin field
-   * based on groupName we set canDrop flag
-   * that indicats if field can be dropped in this group
-   */
-  listenForDragEndItem(){
-    this.dragEndItem$ = this.dndSvc.dragEndItem$
-    .subscribe((d:any)=>{
-      //reset to default
-      this.canDrop = true;
-    });
-  }
+
   onDragEnter(e){
     //console.log("dragEnter...drop-item", e);
     //add class
@@ -86,8 +49,19 @@ export class DropItem {
     //we need to prevent default in order to allow drop
     if (this.canDrop){
       e.preventDefault();
+      e.target.classList.add("active");
+    }else{
+      e.target.classList.add("no-drop");
     }
-    //console.log("dragOver...drop-item");
+    //e.preventDefault();
+    let data={
+      group: this.group,
+      index: this.index,
+      item: e
+    }
+    //console.log("dragover drop-item...", data);
+    //this.canDrop = true;
+    this.dndSvc.setDragOverItem(data);
   }
 
   onDrop(e){
@@ -102,6 +76,8 @@ export class DropItem {
     //remove active class
     e.target.classList.remove("active");
     e.target.classList.remove("no-drop");
+    //publish dragEnd
+    this.dndSvc.setDragEndItem(true);
   }
 
   reducer(data){
@@ -146,5 +122,9 @@ export class DropItem {
       //add item
       this.store.addItemToGroup(this.group, this.index, data);
     }
+  }
+
+  ngOnDestroy(){
+
   }
 }

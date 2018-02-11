@@ -67,7 +67,7 @@ const fields={
     }]
   },{
     "id": "80d192bd-89d8-4837-8ebc-0eb07bde47ec",
-    "name": "Transation",
+    "name": "Transaction",
     "fields":[{
 			"id": "18d8c088-2e06-4d59-beb6-bb3b7b5828ca",
 			"name": "TransactionYear",

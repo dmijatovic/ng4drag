@@ -4,8 +4,8 @@
 
   <div class="group-title"
     draggable="true"
-    (dragstart)="onDragStartItem($event)"
-    (dragend)="onDragEndItem($event)">
+    (dragstart)="onDragStartGroup($event)"
+    (dragend)="onDragEndGroup($event)">
     {{name}}
 
     <nav class="item-nav">
@@ -26,9 +26,11 @@
   </div>
 
   <div class="group-body"
+    (dragenter)="onDragEnterGroup($event)"
     [class.open]="open">
 
     <rule-item *ngFor="let f of fields; index as i"
+      [canDrop]="canDrop"
       [group]="index"
       [groupId]="id"
       [groupName]="name"
@@ -39,6 +41,9 @@
     </rule-item>
 
     <rule-drop-item
+      class="group-drop-item"
+      *ngIf="showDrop"
+      [canDrop]="canDrop"
       [index]="fields.length"
       [group]="index"
       [groupId]="id"
