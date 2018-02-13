@@ -44,5 +44,14 @@ export class DragDropEvents {
     this.dragEnterGroup.next(g);
   }
 
+  //--------------------
+  // EDIT condition item
+  editItem = new Subject()
+  editItem$ = this.editItem.asObservable();
+  setEditItem(c:any){
+    this.editItem.next(c);
+  }
+
+
 
 }

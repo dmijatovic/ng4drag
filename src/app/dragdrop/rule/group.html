@@ -35,19 +35,17 @@
       [groupId]="id"
       [groupName]="name"
       [index]="i"
-      [id]="f.id"
-      [name]="f.name"
-      [fieldType]="f.fieldType">
+      [field]="f">
     </rule-item>
 
     <rule-drop-item
       class="group-drop-item"
       *ngIf="showDrop"
       [canDrop]="canDrop"
-      [index]="fields.length"
       [group]="index"
       [groupId]="id"
-      [groupName]="name">
+      [groupName]="name"
+      [index]="fields.length">
     </rule-drop-item>
 
   </div>

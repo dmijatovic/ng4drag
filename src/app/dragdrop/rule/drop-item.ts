@@ -85,7 +85,7 @@ export class DropItem {
     switch (data.action.toUpperCase()){
       case "ADD_ITEM":
         //create new group
-        this.store.addItemToGroup(this.group, this.index, data);
+        this.addItem(data);
         break;
       case "MOVE_ITEM":
         //first delete item
@@ -94,6 +94,16 @@ export class DropItem {
       default:
         console.warn(`drop-item.reducer...unknown action...${data.action}...defined in dropped data`);
     }
+  }
+  addItem(data){
+    //this.store.addItemToGroup(this.group, this.index, data);
+    //debugger
+    this.dndSvc.setEditItem({
+      group: this.group,
+      groupId: this.groupId,
+      groupName: this.groupName,
+      item: data.field
+    });
   }
   /**
    * Move item involves add item at one position

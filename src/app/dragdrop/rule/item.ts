@@ -15,16 +15,27 @@ export class RuleItem implements OnInit, OnDestroy{
   @Input() groupId:string;
   @Input() groupName:string;
   @Input() index:number;
-  @Input() id:string;
+  @Input() field:any;
+
+  /*@Input() id:string;
   @Input() name:string;
   @Input() fieldType:string;
   @Input() fieldDescription:string;
   @Input() operators=[];
-  @Input() values=[];
+  @Input() values=[];*/
+
+  //here we need to store condition
+  condition={
+    field:null,
+    fieldId:null,
+    operator:null,
+    value:null
+  };
 
   showDrop:boolean=false;
   dragOverItem$:Subscription;
   dragEndItem$:Subscription;
+
 
   constructor(
     private store: DragDropStore,
@@ -62,11 +73,24 @@ export class RuleItem implements OnInit, OnDestroy{
   }
 
   editMe(){
-    console.log("Edit...", this.id, this.group, this.index);
+
+    //console.log("Edit...", this.field.id, this.group, this.index);
+    debugger
+
+    this.dndSvc.setEditItem({
+      group: this.group,
+      groupId: this.groupId,
+      groupName: this.groupName,
+      item:{
+        ...this.field,
+        condition: this.condition
+      }
+    });
+
   }
 
   deleteMe(){
-    console.log("Delete...", this.id, this.group, this.index);
+    console.log("Delete...", this.field.id, this.group, this.index);
     this.store.deleteItem(this.group, this.index);
   }
 
@@ -79,15 +103,7 @@ export class RuleItem implements OnInit, OnDestroy{
       group: this.group,
       groupId: this.groupId,
       groupName: this.groupName,
-      field: {
-        id: this.id,
-        index: this.index,
-        name: this.name,
-        fieldType: this.fieldType,
-        fieldDescription: this.fieldDescription,
-        operators: this.operators,
-        values: this.values
-      }
+      field: this.field
     }
     //debugger
     e.dataTransfer.setData("text",JSON.stringify(data));

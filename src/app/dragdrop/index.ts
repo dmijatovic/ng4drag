@@ -1,6 +1,7 @@
 
 
 export * from './edit/edit-card';
+export * from './edit/edit-item';
 
 
 export * from './fields/fields-card';

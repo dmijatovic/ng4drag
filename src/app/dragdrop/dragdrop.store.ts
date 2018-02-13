@@ -56,7 +56,7 @@ export class DragDropStore {
   }
 
   /**
-   * Add niew field item to existing group
+   * Add new field item to existing group
    * at specific position
    * @param i:group index,
    * @param p:position to insert item
@@ -125,4 +125,6 @@ export class DragDropStore {
       this.Groups.next(this.groups);
     }
   }
+
+
 }

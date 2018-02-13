@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms'
 
 import { DragDropApi } from './dragdrop.api';
 import { DragDropStore } from './dragdrop.store';
 import { DragDropEvents } from './dragdrop.events';
 
 import {
-  EditCard,
+  EditCard, EditItem,
   FieldsCard, FieldsGroup,
   RuleCard, RuleGroup, RuleItem, DropGroup, DropItem
 } from './index';
@@ -14,12 +15,13 @@ import {
 
 @NgModule({
   declarations: [
-    EditCard,
+    EditCard, EditItem,
     FieldsCard, FieldsGroup,
     RuleCard, RuleGroup, RuleItem, DropGroup, DropItem
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule
   ],
   exports:[
     EditCard,

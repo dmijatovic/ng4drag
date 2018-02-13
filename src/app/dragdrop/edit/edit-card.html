@@ -1,5 +1,29 @@
 
 
-<section class="card">
+
+<section class="rb-edit-card flex-col"
+  [class.show]="show"
+  [class.hide]="!show">
+
+<header class="rb-edit-card-header flex-row">
+  <h2>{{cardTitle}}</h2>
+
+  <nav class="rb-edit-nav">
+    <i class="material-icons pointer"
+      (click)="toggleVisibility()">
+      close
+    </i>
+  </nav>
+</header>
+
+<main class="rb-edit-body flex-col">
+
+  <app-edit-item
+    [item]="item"
+    (save)="onSave($event)"
+    (cancel)="onCancel($event)">
+  </app-edit-item>
+
+</main>
 
 </section>

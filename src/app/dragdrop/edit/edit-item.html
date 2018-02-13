@@ -1,0 +1,49 @@
+
+<form [formGroup]="itemForm" novalidate>
+
+<section class="rb-edit-item">
+  <div class="item-row">
+    {{field}}
+
+    <input type="hidden"
+      formControlName="fieldId">
+
+    <input type="hidden"
+      formControlName="field">
+
+  </div>
+
+  <div class="item-row">
+
+    <label>Operator</label>
+    <select required
+      formControlName="operator">
+      <option *ngFor="let item of operators"
+        [value]="item">{{item}}
+      </option>
+    </select>
+
+    <label>Value</label>
+    <input type="text"
+      formControlName="value"/>
+
+  </div>
+
+</section>
+
+</form>
+
+<section>
+  <pre>Form value: {{ itemForm.value | json }}</pre>
+  <pre>Form status: {{ itemForm.status | json }}</pre>
+</section>
+
+<section>
+  <!-- nav buttons -->
+  <button (click)="onCancel()">Cancel</button>
+  <button
+    [disabled]="!itemForm.valid"
+    (click)="onSave()">Save
+  </button>
+</section>
+

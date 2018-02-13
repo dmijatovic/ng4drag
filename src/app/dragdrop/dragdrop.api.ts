@@ -64,6 +64,40 @@ const fields={
 			"fieldDescription": null,
 			"operators": ["=", ">", "<", ">=", "<=", "<>", "BETWEEN", "IN", "EMPTY"],
 			"values": []
+    },{
+      "id": "18d8c088-2e06-4d59-beb6-bb3b7b5827cb",
+			"name": "Address",
+			"fieldType": "Array",
+			"fieldDescription": null,
+			"fields":[{
+        "id": "19e24afe-8c36-4500-978a-6f692b42ab70",
+        "name": "Street",
+        "fieldType": "String",
+        "fieldDescription": null,
+        "operators": ["=", "STARTSWITH", "ENDSWITH", "CONTAINS", "IN", "EMPTY", "LENGTH"],
+        "values": []
+      },{
+        "id": "19e24afe-8c36-4500-978a-6f692b42ab70",
+        "name": "Zipcode",
+        "fieldType": "String",
+        "fieldDescription": null,
+        "operators": ["=", "STARTSWITH", "ENDSWITH", "CONTAINS", "IN", "EMPTY", "LENGTH"],
+        "values": []
+      },{
+        "id": "19e24afe-8c36-4500-978a-6f692b42ab70",
+        "name": "City",
+        "fieldType": "String",
+        "fieldDescription": null,
+        "operators": ["=", "STARTSWITH", "ENDSWITH", "CONTAINS", "IN", "EMPTY", "LENGTH"],
+        "values": []
+      },{
+        "id": "19e24afe-8c36-4500-978a-6f692b42ab70",
+        "name": "Country",
+        "fieldType": "String",
+        "fieldDescription": null,
+        "operators": ["=", "STARTSWITH", "ENDSWITH", "CONTAINS", "IN", "EMPTY", "LENGTH"],
+        "values": []
+      }]
     }]
   },{
     "id": "80d192bd-89d8-4837-8ebc-0eb07bde47ec",
