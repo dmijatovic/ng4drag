@@ -63,8 +63,7 @@ export class DropGroup {
     //debugger
     switch (data.action.toUpperCase()){
       case "ADD_ITEM":
-        //create new group at the bottom
-        this.store.addGroup(data);
+        this.addItem(data);
         break;
       case "MOVE_ITEM":
         this.moveItem(data);
@@ -72,6 +71,29 @@ export class DropGroup {
       default:
         console.warn(`drop-group.reducer...unknown action...${data.action}...defined in dropped data`);
     }
+  }
+  addItem(data){
+    //create new group at the bottom (do not add fields)
+    this.store.addGroup(data, false);
+    //activate edit item modal
+    this.dndSvc.setEditItem({
+      action:"ADD_ITEM",
+      group: this.index,
+      groupId: data.groupId,
+      groupName: data.groupName,
+      field: {
+        ...data.field,
+        //only initial (first) item is edited from here
+        index: 0,
+        //new condition
+        condition:{
+          field:null,
+          fieldId:null,
+          operator:null,
+          value:null
+        }
+      }
+    });
   }
   /**
    * Move item and create group involves two actions

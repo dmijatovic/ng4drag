@@ -74,10 +74,10 @@ export class DropItem {
     //decide what action to apply to droppet data
     this.reducer(data);
     //remove active class
-    e.target.classList.remove("active");
-    e.target.classList.remove("no-drop");
+    //e.target.classList.remove("active");
+    //e.target.classList.remove("no-drop");
     //publish dragEnd
-    this.dndSvc.setDragEndItem(true);
+    //this.dndSvc.setDragEndItem(true);
   }
 
   reducer(data){
@@ -99,10 +99,21 @@ export class DropItem {
     //this.store.addItemToGroup(this.group, this.index, data);
     //debugger
     this.dndSvc.setEditItem({
+      action:"ADD_ITEM",
       group: this.group,
       groupId: this.groupId,
       groupName: this.groupName,
-      item: data.field
+      field: {
+        ...data.field,
+        index: this.index,
+        //new condition
+        condition:{
+          field:null,
+          fieldId:null,
+          operator:null,
+          value:null
+        }
+      }
     });
   }
   /**
@@ -116,22 +127,39 @@ export class DropItem {
       //same group
       if (this.index > data.field.index){
         //add item
-        this.store.addItemToGroup(this.group, this.index, data);
+        this.store.addItemToGroup({
+          group: this.group,
+          index: this.index,
+          field: data.field
+        });
         //delete item
         this.store.deleteItem(data.group, data.field.index);
       }else{
         //delete item
         this.store.deleteItem(data.group, data.field.index);
         //add item
-        this.store.addItemToGroup(this.group, this.index, data);
+        this.store.addItemToGroup({
+          group:this.group,
+          index: this.index,
+          field: data.field
+        });
       }
     }else{
       //different groups
       //delete item
       this.store.deleteItem(data.group, data.field.index);
       //add item
-      this.store.addItemToGroup(this.group, this.index, data);
+      this.store.addItemToGroup({
+        group:this.group,
+        index: this.index,
+        field: data.field
+      });
     }
+
+    //notify that complete dnd process is completed
+    //when moving items this the last action to be
+    //performed in drag&drop action chain
+    this.dndSvc.setDragEndItem(true);
   }
 
   ngOnDestroy(){

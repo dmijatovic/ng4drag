@@ -22,14 +22,15 @@ export class DragDropStore {
    * Create new group based on dropped field
    * @param f: field object
    */
-  addGroup(f){
+  addGroup(f, addField=true){
     //new group
     let g={
       id: f.groupId,
       name: f.groupName,
-      fields:[
-        f.field
-      ]
+      fields:[]
+    }
+    if (addField==true){
+      g.fields.push(f.field);
     }
     //debugger
     //add to collection
@@ -58,22 +59,22 @@ export class DragDropStore {
   /**
    * Add new field item to existing group
    * at specific position
-   * @param i:group index,
-   * @param p:position to insert item
-   * @param f:field object
+   * @param group:group index,
+   * @param index:position to insert item
+   * @param field:field object
    */
-  addItemToGroup(i:number, p:number, f:any){
+  addItemToGroup({group, index, field}){
     //debugger
     let all=[],
         fields=[],
-        g=this.groups[i];
+        g=this.groups[group];
 
     //debugger
     //add field to group at specific position
     fields = [
-      ...g['fields'].slice(0,p),
-      f.field,
-      ...g['fields'].slice(p),
+      ...g['fields'].slice(0,index),
+      field,
+      ...g['fields'].slice(index),
     ]
     g['fields'] = fields;
 
@@ -83,9 +84,9 @@ export class DragDropStore {
     }else{
       //now update array
       all=[
-        ...this.groups.slice(0, i),
+        ...this.groups.slice(0, group),
         g,
-        ...this.groups.slice(i + 1)
+        ...this.groups.slice(group + 1)
       ]
     }
 
@@ -100,7 +101,7 @@ export class DragDropStore {
    * @param g: group index
    * @param i: field index
    */
-  deleteItem(g:number, i:number){
+  deleteItem(g:number, i:number, delEmptyGroup=true){
 
     //debugger
     //copy group based on g position
@@ -114,7 +115,7 @@ export class DragDropStore {
       ...group.fields.slice(i + 1)
     ];
 
-    if (group.fields.length == 0){
+    if (group.fields.length == 0 && delEmptyGroup==true){
       //if no items left then delete
       //complete group!
       this.deleteGroup(g);

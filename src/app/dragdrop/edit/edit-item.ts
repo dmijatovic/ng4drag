@@ -24,14 +24,15 @@ export class EditItem implements OnInit, OnDestroy {
       //debugger
       this.operators = d.operators;
       this.values = d.values;
+      this.field = d.name;
       this.fieldType = d.fieldType;
 
       //define item form
       this.itemForm = new FormGroup({
         fieldId: new FormControl(d.id, Validators.required),
         field: new FormControl(d.name, Validators.required),
-        operator: new FormControl(null,Validators.required),
-        value: new FormControl(null,Validators.required)
+        operator: new FormControl(d.condition.operator,Validators.required),
+        value: new FormControl(d.condition.value,Validators.required)
       });
 
       this.data = d;
@@ -46,6 +47,7 @@ export class EditItem implements OnInit, OnDestroy {
   });
   operators=[];
   values=[];
+  field:string="";
   fieldType:string="";
   data:any;
 
@@ -56,7 +58,8 @@ export class EditItem implements OnInit, OnDestroy {
   }
 
   onCancel(){
-    console.log("Cancel editing item...", this.itemForm.value.field);
+    //console.log("Cancel editing item...", this.itemForm.value.field);
+    //emit cancel request
     this.cancel.next(true);
   }
   onSave(){

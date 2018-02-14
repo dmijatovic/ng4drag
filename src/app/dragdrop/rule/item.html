@@ -14,7 +14,15 @@
   (dragover)="onDragOverItem($event)"
   (dragend)="onDragEndItem($event)">
 
-  <div class="item-title"> {{field?.name}} </div>
+  <div class="item-title">
+    {{field?.name}}
+
+    <span class="item-condition">
+      {{field?.condition?.operator}}
+
+      {{field?.condition?.value}}
+    </span>
+  </div>
 
   <nav class="item-nav">
     <i class="material-icons pointer"

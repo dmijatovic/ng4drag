@@ -17,21 +17,6 @@ export class RuleItem implements OnInit, OnDestroy{
   @Input() index:number;
   @Input() field:any;
 
-  /*@Input() id:string;
-  @Input() name:string;
-  @Input() fieldType:string;
-  @Input() fieldDescription:string;
-  @Input() operators=[];
-  @Input() values=[];*/
-
-  //here we need to store condition
-  condition={
-    field:null,
-    fieldId:null,
-    operator:null,
-    value:null
-  };
-
   showDrop:boolean=false;
   dragOverItem$:Subscription;
   dragEndItem$:Subscription;
@@ -73,17 +58,16 @@ export class RuleItem implements OnInit, OnDestroy{
   }
 
   editMe(){
-
     //console.log("Edit...", this.field.id, this.group, this.index);
-    debugger
-
+    //debugger
     this.dndSvc.setEditItem({
+      action:"EDIT_ITEM",
       group: this.group,
       groupId: this.groupId,
       groupName: this.groupName,
-      item:{
+      field:{
         ...this.field,
-        condition: this.condition
+        index: this.index
       }
     });
 
@@ -103,7 +87,10 @@ export class RuleItem implements OnInit, OnDestroy{
       group: this.group,
       groupId: this.groupId,
       groupName: this.groupName,
-      field: this.field
+      field: {
+        ...this.field,
+        index: this.index
+      }
     }
     //debugger
     e.dataTransfer.setData("text",JSON.stringify(data));
@@ -115,8 +102,7 @@ export class RuleItem implements OnInit, OnDestroy{
     e.preventDefault();
     let data={
       group: this.group,
-      index: this.index,
-      item: e
+      index: this.index
     }
     //console.log("dragover item...", data);
     //this.canDrop = true;
@@ -126,9 +112,10 @@ export class RuleItem implements OnInit, OnDestroy{
    * onDragEndItem does not trigger dragend event when drop is performed
    * therefore this event is executed from onDrop
    * @param e
+   *
    */
   onDragEndItem(e){
-    console.log("dragend item...", this.group,"...", this.index);
+    console.log("onDragEndItem...", this.group,"...", this.index);
     //this.dndSvc.setDragEndItem(true);
   }
   ngOnDestroy(){

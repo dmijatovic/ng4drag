@@ -20,7 +20,7 @@ export class EditCard implements OnInit, OnDestroy {
   //all received data
   data:any;
   //item
-  item:any;
+  field:any;
 
   constructor(
     private store:DragDropStore,
@@ -40,7 +40,7 @@ export class EditCard implements OnInit, OnDestroy {
     //debugger
     this.cardTitle = d.groupName;
     this.data = d;
-    this.item = d.item;
+    this.field = d.field;
   }
 
   toggleVisibility(){
@@ -56,12 +56,66 @@ export class EditCard implements OnInit, OnDestroy {
 
   onCancel(){
     this.toggleVisibility();
+    //notify that complete dnd process is completed
+    this.event.setDragEndItem(true);
   }
 
-  onSave(data){
-    console.log("Save item data...", data);
+  onSave(item){
+    //console.log("Save item data...", item);
+    let d = this.prepData(item);
+    switch(this.data.action){
+      case "ADD_ITEM":
+        this.addItem(d);
+        break;
+      case "EDIT_ITEM":
+        this.editItem(d);
+        break;
+      default:
+        console.warn("Action not supported...", this.data.action)
+    }
     this.toggleVisibility();
+    //notify that complete dnd process is completed
+    this.event.setDragEndItem(true);
   }
+
+  prepData(d){
+    let data={
+      ...this.data,
+      field:{
+        ...this.data.field,
+        condition: d
+      }
+    }
+    //debugger
+    return data;
+  }
+
+  addItem(d){
+    //append condition
+    console.log("Add new item...", d);
+    this.store.addItemToGroup({
+      group: d.group,
+      index: d.field.index,
+      field: d.field
+    });
+  }
+
+  editItem(d){
+    console.log("Edit item...", d);
+    //first delete old item
+    this.store.deleteItem(
+      d.group,
+      d.field.index,
+      false //do not delete empty group
+    );
+    //then add edited item
+    this.store.addItemToGroup({
+      group: d.group,
+      index: d.field.index,
+      field: d.field
+    });
+  }
+
 
   ngOnDestroy(){
     this.editItem$.unsubscribe();

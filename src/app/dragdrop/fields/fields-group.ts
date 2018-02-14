@@ -72,7 +72,7 @@ export class FieldsGroup {
     e.target.style.color="";
     //console.log("dragEndItem...", e);
     //publish
-    this.dndSvc.setDragEndItem(true);
+    //this.dndSvc.setDragEndItem(true);
   }
   ngOnDestroy(){}
 }
