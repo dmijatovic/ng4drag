@@ -29,22 +29,44 @@
     (dragenter)="onDragEnterGroup($event)"
     [class.open]="open">
 
-    <rule-item *ngFor="let f of fields; index as i"
-      [canDrop]="canDrop"
-      [group]="index"
-      [groupId]="id"
-      [groupName]="name"
-      [index]="i"
-      [field]="f">
-    </rule-item>
+    <ng-container *ngFor="let f of fields; index as i">
+
+      <rule-item *ngIf="f.fieldType!='Group'"
+        [canDrop]="canDrop"
+        [parentPath]="path"
+        [groupId]="id"
+        [groupName]="name"
+        [field]="f">
+      </rule-item>
+
+      <rule-group *ngIf="f.fieldType=='Group'"
+        [parentPath]="path"
+        [path]="f.path"
+        [index]="i"
+        [id]="f.id"
+        [name]="f.name"
+        [fields]="f.fields">
+      </rule-group>
+      <!--
+      <rule-drop-item
+        class="group-drop-item"
+        *ngIf="showDrop"
+        [canDrop]="canDrop"
+        [parent]="path"
+        [groupId]="id"
+        [groupName]="name"
+        [index]="i">
+      </rule-drop-item>
+      -->
+    </ng-container>
 
     <rule-drop-item
       class="group-drop-item"
       *ngIf="showDrop"
       [canDrop]="canDrop"
-      [group]="index"
       [groupId]="id"
       [groupName]="name"
+      [parentPath]="path"
       [index]="fields.length">
     </rule-drop-item>
 

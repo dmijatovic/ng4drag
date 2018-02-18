@@ -1,13 +1,14 @@
-
+<!--
 <rule-drop-item
   *ngIf="showDrop"
   [canDrop]="canDrop"
+  [parent]="parent"
   [index]="index"
-  [group]="group"
+  [path]="path"
   [groupId]="groupId"
   [groupName]="groupName">
 </rule-drop-item>
-
+-->
 <div class="rule-item"
   draggable="true"
   (dragstart)="onDragStartItem($event)"

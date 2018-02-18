@@ -9,11 +9,17 @@ import { DragDropEvents } from '../dragdrop.events';
   styleUrls: ['./drop-group.scss']
 })
 export class DropGroup {
-  @Input() index:number
+  @Input() index:number;
+  //path=[];
   constructor(
     private store:DragDropStore,
     private dndSvc:DragDropEvents
   ){}
+
+  ngOnInit(){
+    //debugger
+    //this.path.push(this.index);
+  }
 
   onDragEnter(e){
     //console.log("dragEnter...drop-group", e);
@@ -21,6 +27,12 @@ export class DropGroup {
     //debugger
     //e.target.style.backgroundColor = 'rgba(75, 75, 75, 0.2)';
     e.target.classList.add("active");
+    //notify others
+    this.dndSvc.setDragEnterGroup({
+      id: null,
+      index: this.index,
+      name: null
+    })
   }
 
   onDragLeave(e){
@@ -34,12 +46,6 @@ export class DropGroup {
   onDragOver(e){
     //we need to prevent default in order to allow drop
     e.preventDefault();
-    //console.log("dragOver...drop-group");
-    this.dndSvc.setDragEnterGroup({
-      id: null,
-      index: this.index,
-      name: null
-    });
   }
 
   onDrop(e){
@@ -68,23 +74,49 @@ export class DropGroup {
       case "MOVE_ITEM":
         this.moveItem(data);
         break;
+      case "MOVE_GROUP":
+        this.moveGroup(data);
+        break;
       default:
         console.warn(`drop-group.reducer...unknown action...${data.action}...defined in dropped data`);
     }
   }
+  /**
+   * Creates new group with empty fields collection
+   * @param data
+   */
+  createNewGroup(data){
+    //add group first without field
+    let all = this.store.addItemToPath({
+     path: [this.index],
+     item: { //group item type
+       id: data.groupId,
+       name: data.groupName,
+       parentPath: null,
+       path: [this.index],
+       fieldType: 'Group',
+       fields: []
+     }
+   });
+   return all;
+  }
   addItem(data){
-    //create new group at the bottom (do not add fields)
-    this.store.addGroup(data, false);
+    //debugger
+    let all = this.createNewGroup(data);
+    //publish group to be visible & accessible
+    this.store.publish(all);
     //activate edit item modal
     this.dndSvc.setEditItem({
       action:"ADD_ITEM",
-      group: this.index,
+      //group: this.index,
+      parentPath: [ this.index ],
       groupId: data.groupId,
       groupName: data.groupName,
       field: {
         ...data.field,
         //only initial (first) item is edited from here
         index: 0,
+        path: [ this.index, 0 ],
         //new condition
         condition:{
           field:null,
@@ -97,13 +129,46 @@ export class DropGroup {
   }
   /**
    * Move item and create group involves two actions
-   * add new group and remove item from its original group
+   * add new group and move item from its original group
    * @param data
    */
   moveItem(data){
-    //create new group at the bottom
-    this.store.addGroup(data);
-    //delete item from its previous position
-    this.store.deleteItem(data.group, data.field.index);
+   //debugger
+   let all = this.createNewGroup(data);
+   //publish group to be visible & accessible
+   this.store.publish(all);
+   //move item to new group at first position
+   all = this.store.moveItemToPath({
+     path: [this.index, 0],
+     item: data.field
+   });
+   //publish
+   this.store.publish(all);
+   //set drag end
+   this.dndSvc.setDragEndItem(true);
+  }
+  /**
+   * Move group from item level to top level
+   * or from top level position x to position y
+   * @param data
+   */
+  moveGroup(data){
+    //debugger
+    //move item
+    let all = this.store.moveItemToPath({
+      path:[this.index],
+      item: {
+        id: data.groupId,
+        name: data.groupName,
+        parentPath: data.parentPath,
+        path: data.path,
+        fieldType: data.fieldType,
+        fields: data.fields
+      }
+    })
+    //publish
+    this.store.publish(all);
+    //set drag end
+    this.dndSvc.setDragEndItem(true);
   }
 }

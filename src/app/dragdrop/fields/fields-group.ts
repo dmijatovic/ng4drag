@@ -71,7 +71,7 @@ export class FieldsGroup {
     //e.target.style.fontWeight=500;
     e.target.style.color="";
     //console.log("dragEndItem...", e);
-    //publish
+    //publish from other components
     //this.dndSvc.setDragEndItem(true);
   }
   ngOnDestroy(){}

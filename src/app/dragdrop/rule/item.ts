@@ -10,44 +10,74 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./item.scss']
 })
 export class RuleItem implements OnInit, OnDestroy{
-  @Input() canDrop:boolean=false;
-  @Input() group:number;
+  //group info
+  @Input() parentPath=[];
   @Input() groupId:string;
   @Input() groupName:string;
-  @Input() index:number;
+  @Input() canDrop:boolean=false;
+  //@Input() index:number;
+  //main item data
   @Input() field:any;
 
-  showDrop:boolean=false;
-  dragOverItem$:Subscription;
-  dragEndItem$:Subscription;
-
+  //showDrop:boolean=false;
+  //dragOverItem$:Subscription;
+  //dragEndItem$:Subscription;
 
   constructor(
     private store: DragDropStore,
     private dndSvc: DragDropEvents
   ){}
 
+
   ngOnInit(){
-    this.listenForDragEndItem();
-    this.listenForDragoverItem();
+    //this.listenForDragEndItem();
+    //this.listenForDragoverItem();
   }
+
+  ngOnChanges(data){
+    //console.log("OnChanges...item...", data);
+    //path calculation need to be performed
+    //on each data change/update (not to miss deletion)
+    //at this point the data is already changed in props
+    //so we can just use new prop values
+    //this.setPath(data);
+  }
+
+  /**
+   * Determine component position in tree structure
+   * note! this information is used for crud operations
+
+  setPath(data){
+    //debugger
+    if (this.parent){
+      this.field.path =[
+        ...this.parent,
+        this.index
+      ]
+    }else{
+      console.warn("item has no parent prop...",data)
+    }
+  }*/
+  /* moved into group
   listenForDragoverItem(){
     this.dragOverItem$ = this.dndSvc.dragOverItem$
     .subscribe((d:any)=>{
-      //filter out request for me
-      if (d.index == this.index && d.group == this.group){
-        //console.log("I received dragover request over me", d);
-        this.showDrop = true;
+      //debugger
+      if (d.path == this.field.path){
+        //debugger
+        console.log("I received dragover request over me", d.path);
+        //this.showDrop = true;
       }else{
+        //console.log("I received dragover request over me", d);
         this.showDrop = false;
       }
     });
   }
-   /**
+   /** moved into group
    * Listen when user start draggin field
    * based on groupName we set canDrop flag
    * that indicats if field can be dropped in this group
-   */
+
   listenForDragEndItem(){
     this.dragEndItem$ = this.dndSvc.dragEndItem$
     .subscribe((d:any)=>{
@@ -55,58 +85,66 @@ export class RuleItem implements OnInit, OnDestroy{
       //console.log("listenForDragEndItem...showDrop...set to false");
       this.showDrop = false;
     });
-  }
+  }*/
 
   editMe(){
     //console.log("Edit...", this.field.id, this.group, this.index);
     //debugger
     this.dndSvc.setEditItem({
       action:"EDIT_ITEM",
-      group: this.group,
+      parent: this.parentPath,
       groupId: this.groupId,
       groupName: this.groupName,
       field:{
-        ...this.field,
-        index: this.index
+        ...this.field
       }
     });
 
   }
 
   deleteMe(){
-    console.log("Delete...", this.field.id, this.group, this.index);
-    this.store.deleteItem(this.group, this.index);
+    console.log("Delete...", this.field.path);
+    //this.store.deletePath(this.path);
+    let all = this.store.deleteItemAtPath({
+      path: this.field.path,
+    });
+    //publish changes
+    this.store.publish(all);
   }
 
   onDragStartItem(e){
-    console.log("dragstart item...", this.group,"...", this.index);
+    console.log("onDragStartItem...", this.field.path);
     //let group = this.store.getGrops()[this.group];
     //debugger
     let data = {
       action:"MOVE_ITEM",
-      group: this.group,
+      parent: this.parentPath,
       groupId: this.groupId,
       groupName: this.groupName,
       field: {
-        ...this.field,
-        index: this.index
+        ...this.field
       }
     }
     //debugger
     e.dataTransfer.setData("text",JSON.stringify(data));
+    //debugger
+    e.dataTransfer.dropEffect="grab";
     //set item dragstart event
     this.dndSvc.setDragStartItem(data);
   }
   /* fire dragover event over specific item */
   onDragOverItem(e){
-    e.preventDefault();
-    let data={
-      group: this.group,
-      index: this.index
+    if (this.canDrop == true){
+      e.preventDefault();
+      let data={
+        parent: this.parentPath,
+        path: this.field.path,
+        //index: this.index
+      }
+      //console.log("onDragOverItem...", data);
+      //this.canDrop = true;
+      this.dndSvc.setDragOverItem(data);
     }
-    //console.log("dragover item...", data);
-    //this.canDrop = true;
-    this.dndSvc.setDragOverItem(data);
   }
   /**
    * onDragEndItem does not trigger dragend event when drop is performed
@@ -115,11 +153,11 @@ export class RuleItem implements OnInit, OnDestroy{
    *
    */
   onDragEndItem(e){
-    console.log("onDragEndItem...", this.group,"...", this.index);
-    //this.dndSvc.setDragEndItem(true);
+    console.log("onDragEndItem...", this.field.path);
+    this.dndSvc.setDragEndItem(true);
   }
   ngOnDestroy(){
-    this.dragEndItem$.unsubscribe();
-    this.dragOverItem$.unsubscribe();
+    //this.dragEndItem$.unsubscribe();
+    //this.dragOverItem$.unsubscribe();
   }
 }

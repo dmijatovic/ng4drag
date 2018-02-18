@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 
 import { DragDropStore } from '../dragdrop.store';
 import { DragDropEvents } from '../dragdrop.events';
-import { Subscription } from 'rxjs/Subscription';
+//import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'rule-drop-item',
@@ -10,10 +10,11 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./drop-item.scss']
 })
 export class DropItem {
+  //item path
+  @Input() parentPath=[];
   //item index
   @Input() index:number;
-  //group index
-  @Input() group:number;
+  //@Input() path=[];
   @Input() groupId:string;
   @Input() groupName:string;
   @Input() canDrop:boolean=true;
@@ -22,11 +23,30 @@ export class DropItem {
     private store:DragDropStore,
     private dndSvc:DragDropEvents
   ){}
-
-  ngOnInit(){
-
-  }
-
+  /*
+  ngOnChanges(data){
+    //console.log("OnChanges...item...", data);
+    //path calculation need to be performed
+    //on each data change/update (not to miss deletion)
+    //at this point the data is already changed in props
+    //so we can just use new prop values
+    this.setPath();
+    //console.log("drop-item...path...", this.path);
+  }*/
+  /**
+   * Determine component position in tree structure
+   * note! this information is used for crud operations
+  setPath(){
+    try{
+      this.path = [
+        ...this.parentPath,
+        this.index
+      ]
+    }catch(e){
+      debugger
+      console.error(e);
+    }
+  }*/
   onDragEnter(e){
     //console.log("dragEnter...drop-item", e);
     //add class
@@ -53,15 +73,16 @@ export class DropItem {
     }else{
       e.target.classList.add("no-drop");
     }
+    /* do we need this?
     //e.preventDefault();
     let data={
-      group: this.group,
-      index: this.index,
-      item: e
+      path: [...this.parentPath, this.index],
+      index: this.index
     }
     //console.log("dragover drop-item...", data);
     //this.canDrop = true;
     this.dndSvc.setDragOverItem(data);
+    */
   }
 
   onDrop(e){
@@ -70,14 +91,9 @@ export class DropItem {
     //debugger
     //get data
     let data = JSON.parse(e.dataTransfer.getData("text"));
-    //console.log("onDrop...drop-item", data);
+    //console.log("onDrop...drop-item...", data, this.path);
     //decide what action to apply to droppet data
     this.reducer(data);
-    //remove active class
-    //e.target.classList.remove("active");
-    //e.target.classList.remove("no-drop");
-    //publish dragEnd
-    //this.dndSvc.setDragEndItem(true);
   }
 
   reducer(data){
@@ -88,24 +104,29 @@ export class DropItem {
         this.addItem(data);
         break;
       case "MOVE_ITEM":
-        //first delete item
+        //move item
         this.moveItem(data);
+        break;
+      case "MOVE_GROUP":
+        this.moveGroup(data);
         break;
       default:
         console.warn(`drop-item.reducer...unknown action...${data.action}...defined in dropped data`);
     }
   }
   addItem(data){
-    //this.store.addItemToGroup(this.group, this.index, data);
     //debugger
     this.dndSvc.setEditItem({
       action:"ADD_ITEM",
-      group: this.group,
+      //at this location
+      parentPath: this.parentPath,
       groupId: this.groupId,
       groupName: this.groupName,
       field: {
         ...data.field,
+        //add position and path
         index: this.index,
+        path: [...this.parentPath, this.index],
         //new condition
         condition:{
           field:null,
@@ -119,43 +140,40 @@ export class DropItem {
   /**
    * Move item involves add item at one position
    * and deleting old item from its previous position
-   * depending on 'move direction' the order of add/delete is important
    */
   moveItem(data){
-    //moving items within same group
-    if (data.group == this.group){
-      //same group
-      if (this.index > data.field.index){
-        //add item
-        this.store.addItemToGroup({
-          group: this.group,
-          index: this.index,
-          field: data.field
-        });
-        //delete item
-        this.store.deleteItem(data.group, data.field.index);
-      }else{
-        //delete item
-        this.store.deleteItem(data.group, data.field.index);
-        //add item
-        this.store.addItemToGroup({
-          group:this.group,
-          index: this.index,
-          field: data.field
-        });
+    //debugger
+    let all = this.store.moveItemToPath({
+      path: [...this.parentPath, this.index],
+      item: data.field
+    });
+    //publish changes
+    this.store.publish(all);
+    //notify that complete dnd process is completed
+    //when moving items this the last action to be
+    //performed in drag&drop action chain
+    this.dndSvc.setDragEndItem(true);
+  }
+  /**
+   * Move group into an item
+   * @param data
+   */
+  moveGroup(data){
+    //console.log("Move group...", data);
+    //debugger
+    let all = this.store.moveItemToPath({
+      path: [...this.parentPath, this.index],
+      item: {
+        path: data.path,
+        id: data.groupId,
+        name: data.groupName,
+        parentPath: data.parentPath,
+        fieldType: data.fieldType,
+        fields: data.fields
       }
-    }else{
-      //different groups
-      //delete item
-      this.store.deleteItem(data.group, data.field.index);
-      //add item
-      this.store.addItemToGroup({
-        group:this.group,
-        index: this.index,
-        field: data.field
-      });
-    }
-
+    });
+    //publish changes
+    this.store.publish(all);
     //notify that complete dnd process is completed
     //when moving items this the last action to be
     //performed in drag&drop action chain

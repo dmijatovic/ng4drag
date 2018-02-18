@@ -23,7 +23,7 @@ export class EditCard implements OnInit, OnDestroy {
   field:any;
 
   constructor(
-    private store:DragDropStore,
+    private store: DragDropStore,
     private event: DragDropEvents
   ){}
 
@@ -32,7 +32,7 @@ export class EditCard implements OnInit, OnDestroy {
     .subscribe((d:any) =>{
       //debugger
       this.dataToProps(d);
-      this.show = true;
+      this.toggleVisibility();
     });
   }
 
@@ -79,6 +79,7 @@ export class EditCard implements OnInit, OnDestroy {
   }
 
   prepData(d){
+    //debugger
     let data={
       ...this.data,
       field:{
@@ -91,29 +92,33 @@ export class EditCard implements OnInit, OnDestroy {
   }
 
   addItem(d){
-    //append condition
-    console.log("Add new item...", d);
-    this.store.addItemToGroup({
-      group: d.group,
-      index: d.field.index,
-      field: d.field
+    //console.log("Add new item...", d);
+    //debugger
+    if (d.field.path.length==0){
+      console.error("edit-card.addItem...cannot add item...field.path=undefined");
+      return
+    }
+    let data = this.store.addItemToPath({
+      path: d.field.path,
+      item: d.field
     });
+    //publish changes
+    this.store.publish(data);
   }
 
   editItem(d){
-    console.log("Edit item...", d);
-    //first delete old item
-    this.store.deleteItem(
-      d.group,
-      d.field.index,
-      false //do not delete empty group
-    );
-    //then add edited item
-    this.store.addItemToGroup({
-      group: d.group,
-      index: d.field.index,
-      field: d.field
+    //console.log("Edit item...", d);
+    //debugger
+    if (d.field.path.length==0){
+      console.error("edit-card.addItem...cannot edit item...field.path=undefined");
+      return
+    }
+    let data = this.store.updateItemAtPath({
+      path: d.field.path,
+      item: d.field
     });
+    //publish changes
+    this.store.publish(data);
   }
 
 

@@ -1,4 +1,6 @@
 
+<button (click)="saveSegment()"
+  [disabled]="!canSave">Save</button>
 
 <section class="rule-card">
   <h2>Rule </h2>
@@ -7,11 +9,13 @@
     (dragenter)="onDragEnter($event)">
 
     <rule-group *ngFor="let g of groups; index as i"
-      [index]="i"
+      [path]="g.path"
       [id]="g.id"
       [name]="g.name"
+      [index]="i"
       [fields]="g.fields">
     </rule-group>
+
 
     <rule-drop-group
       *ngIf="dropZoneGroup"
@@ -19,6 +23,9 @@
     </rule-drop-group>
 
   </div>
+</section>
 
-
+<section class="rule-card">
+  Rule data:
+  <pre>{{ groups | json }}</pre>
 </section>

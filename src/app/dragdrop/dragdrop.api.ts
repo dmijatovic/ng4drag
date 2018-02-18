@@ -182,3 +182,204 @@ const fields={
     }]
   }]
 }
+
+
+
+const segmentSample=[
+  {
+    "id": "80d192bd-89d8-4837-8ebc-0eb07bde47ec",
+    "name": "Customer details",
+    "parent": null,
+    "path": [ 0 ],
+    "fieldType": "Group",
+    "fields": [
+      {
+        "id": "e0189624-0017-482f-99fb-ec24b73e43b1",
+        "name": "Registration Date",
+        "fieldType": "DateTime",
+        "fieldDescription": null,
+        "operators": [
+          "=",
+          ">",
+          "<",
+          ">=",
+          "<=",
+          "BETWEEN",
+          "EMPTY"
+        ],
+        "values": [],
+        "index": 0,
+        "path": [ 0,0 ],
+        "condition": {
+          "fieldId": "e0189624-0017-482f-99fb-ec24b73e43b1",
+          "field": "Registration Date",
+          "operator": ">",
+          "value": "vdvxcv"
+        }
+      },
+      {
+        "path": [2],
+        "id": "80d192bd-89d8-4837-8ebc-0eb07bde47ec",
+        "name": "Customer details",
+        "parent": null,
+        "fieldType": "Group",
+        "fields": [
+          {
+            "id": "e0189624-0017-482f-99fb-ec24b73e43b1",
+            "name": "Registration Date",
+            "fieldType": "DateTime",
+            "fieldDescription": null,
+            "operators": [
+              "=",
+              ">",
+              "<",
+              ">=",
+              "<=",
+              "BETWEEN",
+              "EMPTY"
+            ],
+            "values": [],
+            "index": 0,
+            "path": [0,1,0],
+            "condition": {
+              "fieldId": "e0189624-0017-482f-99fb-ec24b73e43b1",
+              "field": "Registration Date",
+              "operator": ">",
+              "value": "zczxc"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "80d192bd-89d8-4837-8ebc-0eb07bde47ec",
+    "name": "Customer details",
+    "parent": null,
+    "path": [1],
+    "fieldType": "Group",
+    "fields": [
+      {
+        "id": "19e24afe-8c36-4500-978a-6f692b42ab70",
+        "name": "Country",
+        "fieldType": "String",
+        "fieldDescription": null,
+        "operators": [
+          "=",
+          "STARTSWITH",
+          "ENDSWITH",
+          "CONTAINS",
+          "IN",
+          "EMPTY",
+          "LENGTH"
+        ],
+        "values": [],
+        "index": 0,
+        "path": [
+          1,
+          0
+        ],
+        "condition": {
+          "fieldId": "19e24afe-8c36-4500-978a-6f692b42ab70",
+          "field": "Country",
+          "operator": "STARTSWITH",
+          "value": "ddad"
+        }
+      },
+      {
+        "id": "e0189624-0017-482f-99fb-ec24b73e43b3",
+        "name": "Birthday",
+        "fieldType": "DateTime",
+        "fieldDescription": null,
+        "operators": [
+          "=",
+          ">",
+          "<",
+          ">=",
+          "<=",
+          "BETWEEN",
+          "EMPTY"
+        ],
+        "values": [],
+        "index": 1,
+        "path": [
+          1,
+          1
+        ],
+        "condition": {
+          "fieldId": "e0189624-0017-482f-99fb-ec24b73e43b3",
+          "field": "Birthday",
+          "operator": ">",
+          "value": "sdsd"
+        }
+      }
+    ]
+  },
+  {
+    "id": "80d192bd-89d8-4837-8ebc-0eb07bde47ec",
+    "name": "Transaction",
+    "parent": null,
+    "path": [
+      2
+    ],
+    "fieldType": "Group",
+    "fields": [
+      {
+        "id": "19e24afe-8c36-4500-978a-6f692b42ab70",
+        "name": "CardNumber",
+        "fieldType": "String",
+        "fieldDescription": null,
+        "operators": [
+          "=",
+          "STARTSWITH",
+          "ENDSWITH",
+          "CONTAINS",
+          "IN",
+          "EMPTY",
+          "LENGTH"
+        ],
+        "values": [],
+        "index": 0,
+        "path": [
+          2,
+          0
+        ],
+        "condition": {
+          "fieldId": "19e24afe-8c36-4500-978a-6f692b42ab70",
+          "field": "CardNumber",
+          "operator": "STARTSWITH",
+          "value": "asdasd"
+        }
+      },
+      {
+        "id": "97b0a0b0-6282-4c1d-b7bf-19f36e07a049",
+        "name": "gerealiseerd",
+        "fieldType": "Integer",
+        "fieldDescription": null,
+        "operators": [
+          "=",
+          ">",
+          "<",
+          ">=",
+          "<=",
+          "<>",
+          "BETWEEN",
+          "IN",
+          "EMPTY"
+        ],
+        "values": [],
+        "index": 1,
+        "path": [
+          2,
+          1
+        ],
+        "condition": {
+          "fieldId": "97b0a0b0-6282-4c1d-b7bf-19f36e07a049",
+          "field": "gerealiseerd",
+          "operator": "=",
+          "value": "adasd"
+        }
+      }
+    ]
+  }
+]
